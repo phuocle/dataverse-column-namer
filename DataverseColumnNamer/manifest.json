@@ -24,6 +24,7 @@
         "https://make.powerapps.com/*"
       ],
       "js": [
+        "naming-utils.js",
         "content.js"
       ],
       "css": [
