@@ -725,10 +725,18 @@
             }
         });
 
-        observer.observe(document.body, {
-            childList: true,
-            subtree: true
-        });
+        const panelContainer = document.getElementById('pagePanels-layer-id');
+        if (panelContainer) {
+            observer.observe(panelContainer, {
+                childList: true,
+                subtree: true
+            });
+        } else {
+            observer.observe(document.body, {
+                childList: true,
+                subtree: true
+            });
+        }
     }
 
     function injectPanelBadge() {
