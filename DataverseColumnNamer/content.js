@@ -109,6 +109,7 @@
 
             currentSuffixes = { ...DEFAULT_SUFFIXES, ...stored };
         } catch (error) {
+            console.error('[DataverseColumnNamer] Failed to load settings from chrome.storage.local:', error);
             currentSuffixes = { ...DEFAULT_SUFFIXES };
             currentNamingConvention = 'underscore_lowercase';
         }
