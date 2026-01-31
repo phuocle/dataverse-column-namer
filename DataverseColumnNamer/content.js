@@ -352,7 +352,6 @@
     async function init() {
         await loadSettings();
         setupEnvironmentWatcher();
-        setupResizeListener();
 
         chrome.storage.onChanged.addListener((changes, namespace) => {
             if (namespace === 'local' && changes.DataverseColumnNamer) {
@@ -488,16 +487,6 @@
             characterData: true,
             childList: true,
             subtree: true
-        });
-    }
-
-    function setupResizeListener() {
-        let timeout;
-        window.addEventListener('resize', () => {
-            clearTimeout(timeout);
-            timeout = setTimeout(() => {
-                checkAndScanEnvironment();
-            }, 500);
         });
     }
 
