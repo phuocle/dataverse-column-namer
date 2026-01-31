@@ -763,8 +763,32 @@
 
         let result = applyNamingConvention(str);
 
+        // Remove any remaining invalid characters
         result = result.replace(/[^a-zA-Z0-9_]/g, '');
 
+        // If nothing remains, we cannot generate a valid schema name
+        if (!result) {
+            console.warn('DataverseColumnNamer: Unable to generate a valid schema name from display name:', str);
+            return '';
+        }
+
+        // Ensure the schema name starts with a letter
+        if (!/^[A-Za-z]/.test(result)) {
+            console.warn('DataverseColumnNamer: Schema name did not start with a letter. Prepending "a" to:', result);
+            result = 'a' + result;
+        }
+
+        // Enforce maximum length constraint (Dataverse logical names are typically limited)
+        const MAX_SCHEMA_NAME_LENGTH = 50;
+        if (result.length > MAX_SCHEMA_NAME_LENGTH) {
+            console.warn(
+                'DataverseColumnNamer: Schema name exceeded maximum length and was truncated:',
+                result,
+                '->',
+                result.substring(0, MAX_SCHEMA_NAME_LENGTH)
+            );
+            result = result.substring(0, MAX_SCHEMA_NAME_LENGTH);
+        }
         return result;
     }
 
