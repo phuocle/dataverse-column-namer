@@ -793,11 +793,16 @@
     }
 
     function setReactInputValue(input, value) {
-        const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
+        const valueDescriptor = Object.getOwnPropertyDescriptor(
             window.HTMLInputElement.prototype, 'value'
-        ).set;
+        );
 
-        nativeInputValueSetter.call(input, value);
+        if (valueDescriptor && typeof valueDescriptor.set === 'function') {
+            valueDescriptor.set.call(input, value);
+        } else {
+            // Fallback: directly set the value if the native setter is unavailable
+            input.value = value;
+        }
         const inputEvent = new Event('input', { bubbles: true });
         input.dispatchEvent(inputEvent);
     }
