@@ -435,30 +435,29 @@
     }
 
     async function setupEnvironmentWatcher() {
-        // Performance optimization: Use MutationObserver instead of polling
-        const envTitleEl = document.querySelector('div[data-test-id="EnvironmentTitle"]');
+        const maxAttempts = 60;
+        let envTitleEl = null;
 
-        if (envTitleEl) {
-            // Element already exists
-            attachEnvironmentTitleObserver(envTitleEl);
+        for (let i = 0; i < maxAttempts; i++) {
+            envTitleEl = document.querySelector('div[data-test-id="EnvironmentTitle"]');
+            if (envTitleEl) break;
+            await new Promise(resolve => setTimeout(resolve, 500));
+        }
+
+        if (!envTitleEl) {
+            const bodyObserver = new MutationObserver((mutations, obs) => {
+                const el = document.querySelector('div[data-test-id="EnvironmentTitle"]');
+                if (el) {
+                    obs.disconnect();
+                    attachEnvironmentTitleObserver(el);
+                }
+            });
+
+            bodyObserver.observe(document.body, { childList: true, subtree: true });
             return;
         }
 
-        // Element not found, wait for it with MutationObserver
-        const observer = new MutationObserver((mutations, obs) => {
-            const el = document.querySelector('div[data-test-id="EnvironmentTitle"]');
-            if (el) {
-                obs.disconnect();
-                attachEnvironmentTitleObserver(el);
-            }
-        });
-
-        observer.observe(document.body, { childList: true, subtree: true });
-
-        // Fallback timeout to disconnect observer if element never appears
-        setTimeout(() => {
-            observer.disconnect();
-        }, 30000); // 30 second timeout
+        attachEnvironmentTitleObserver(envTitleEl);
     }
 
     function attachEnvironmentTitleObserver(element) {
@@ -485,12 +484,8 @@
         });
     }
 
-    // Direct DOM query - no caching (cache was causing stale data type detection bugs)
     function getDataType() {
-        let result = '';
         const dataTypeLabel = document.querySelector(SELECTORS.dataTypeButton);
-
-        if (IS_DEBUG) console.log('[DCN] getDataType - reading:', dataTypeLabel?.textContent?.trim());
 
         if (dataTypeLabel) {
             const text = dataTypeLabel.textContent.trim().toLowerCase();
@@ -502,75 +497,72 @@
                     const formatText = formatValue.textContent.trim().toLowerCase();
                     // Return specific format if it's not just "text"
                     if (formatText === 'text area') {
-                        result = 'text_area';
-                    } else if (formatText === 'email') {
-                        result = 'email';
-                    } else if (formatText === 'phone' || formatText === 'phone number') {
-                        result = 'phone';
-                    } else if (formatText === 'url') {
-                        result = 'url';
-                    } else if (formatText === 'ticker symbol') {
-                        result = 'ticker symbol';
-                    } else if (formatText === 'rich text') {
-                        result = 'text_richtext';
-                    } else {
-                        result = text;
+                        return 'text_area';
                     }
-                } else {
-                    result = text;
+                    if (formatText === 'email') {
+                        return 'email';
+                    }
+                    if (formatText === 'phone' || formatText === 'phone number') {
+                        return 'phone';
+                    }
+                    if (formatText === 'url') {
+                        return 'url';
+                    }
+                    if (formatText === 'ticker symbol') {
+                        return 'ticker symbol';
+                    }
+                    if (formatText === 'rich text') {
+                        return 'text_richtext';
+                    }
                 }
             }
-            // If it's "Multiple lines of text", check the format dropdown  
-            else if (text === 'multiple lines of text') {
+
+            // If it's "Multiple lines of text", check the format dropdown
+            if (text === 'multiple lines of text') {
                 const formatValue = document.querySelector(SELECTORS.formatValue);
                 if (formatValue) {
                     const formatText = formatValue.textContent.trim().toLowerCase();
                     if (formatText === 'rich text') {
-                        result = 'multiline_richtext';
-                    } else {
-                        result = 'multiline';
+                        return 'multiline_richtext';
                     }
-                } else {
-                    result = 'multiline';
                 }
+                return 'multiline';
             }
+
             // If it's "Whole number", check the format dropdown for specific formats
-            else if (text === 'whole number') {
+            if (text === 'whole number') {
                 const formatValue = document.querySelector(SELECTORS.formatValue);
                 if (formatValue) {
                     const formatText = formatValue.textContent.trim().toLowerCase();
                     if (formatText === 'duration') {
-                        result = 'duration';
-                    } else if (formatText === 'language code' || formatText === 'language') {
-                        result = 'language';
-                    } else if (formatText === 'time zone' || formatText === 'timezone') {
-                        result = 'timezone';
-                    } else {
-                        result = 'whole number';
+                        return 'duration';
                     }
-                } else {
-                    result = 'whole number';
+                    if (formatText === 'language code' || formatText === 'language') {
+                        return 'language';
+                    }
+                    if (formatText === 'time zone' || formatText === 'timezone') {
+                        return 'timezone';
+                    }
                 }
+                return 'whole number';
             }
+
             // If it's "Date and time", check the format dropdown
-            else if (text === 'date and time') {
+            if (text === 'date and time') {
                 const formatValue = document.querySelector(SELECTORS.formatValue);
                 if (formatValue) {
                     const formatText = formatValue.textContent.trim().toLowerCase();
                     if (formatText === 'date only') {
-                        result = 'date only';
-                    } else {
-                        result = 'date and time';
+                        return 'date only';
                     }
-                } else {
-                    result = 'date and time';
                 }
-            } else {
-                result = text;
+                return 'date and time';
             }
+
+            return text;
         }
 
-        return result;
+        return '';
     }
 
     function isLookupType() {
@@ -591,38 +583,11 @@
     }
 
     function getBehaviorType() {
-        // Advanced Fix: Scan for ALL elements with this ID because PowerApps might have duplicates
-        const allOptions = document.querySelectorAll('#tooltipColumnBehavior-option');
-
-        if (IS_DEBUG) {
-            console.log(`[DCN] Found ${allOptions.length} elements with ID #tooltipColumnBehavior-option`);
-            allOptions.forEach((el, idx) => {
-                console.log(`  [${idx}] Text: "${el.textContent}", Visible: ${el.offsetParent !== null}`);
-            });
+        const behaviorOption = document.querySelector('#tooltipColumnBehavior-option');
+        if (behaviorOption) {
+            return behaviorOption.textContent.trim().toLowerCase();
         }
-
-        // Try to find a meaningful value (not "Simple")
-        let bestMatch = '';
-        for (const el of allOptions) {
-            const text = el.textContent.trim().toLowerCase();
-            if (text !== 'simple' && text !== '') {
-                bestMatch = text;
-                // If we find a non-simple value, assume it's the selected one
-                break;
-            }
-        }
-
-        if (bestMatch) return bestMatch;
-
-        // Fallback: If only "Simple" exists or nothing found, check other selectors
-        if (allOptions.length > 0) {
-            return allOptions[0].textContent.trim().toLowerCase();
-        }
-
-        // Fallback selectors
-        const sel2 = document.querySelector('#ColumnForm_Behavior option:checked');
-        const sel3 = document.querySelector('[data-testid="columnBehavior"] span');
-        return (sel2 || sel3)?.textContent.trim().toLowerCase() || '';
+        return '';
     }
 
     function isCalculatedBehavior() {
@@ -758,44 +723,35 @@
 
     function toRemoveSpaces(input) {
         if (!input) return '';
-        return input.trim().replace(/\s+/g, ''); // Remove spaces only, preserve case
+        return input.trim().replace(/\s+/g, '').toLowerCase();
     }
 
     function applyNamingConvention(str) {
         if (!str) return '';
 
-        let result = '';
-
         switch (currentNamingConvention) {
             case 'underscore_preserve':
-                result = toUnderscorePreserve(str);
-                break;
+                return toUnderscorePreserve(str);
             case 'pascalCase':
-                result = toPascalCase(str);
-                break;
+                return toPascalCase(str);
             case 'camelCase':
-                result = toCamelCase(str);
-                break;
+                return toCamelCase(str);
             case 'remove_spaces':
-                result = toRemoveSpaces(str);
-                break;
+                return toRemoveSpaces(str);
             case 'underscore_lowercase':
             default:
-                result = toUnderscoreLowercase(str);
-                break;
+                return toUnderscoreLowercase(str).replace(/[^a-z0-9_]/g, '');
         }
-
-        // Remove all invalid characters for Dataverse schema names (only a-zA-Z0-9_ allowed)
-        result = result.replace(/[^a-zA-Z0-9_]/g, '');
-
-        return result;
     }
 
     function toSnakeCase(str) {
         if (!str) return '';
 
-        // applyNamingConvention already filters invalid characters
-        return applyNamingConvention(str);
+        let result = applyNamingConvention(str);
+
+        result = result.replace(/[^a-zA-Z0-9_]/g, '');
+
+        return result;
     }
 
     function setReactInputValue(input, value) {
@@ -848,14 +804,6 @@
     }
 
     function setupSchemaNameOverride() {
-        // Performance optimization: Debounce function for updateSchemaName
-        // Use 300ms delay to ensure PowerApps DOM has fully updated
-        let updateTimeout;
-        const debouncedUpdate = () => {
-            clearTimeout(updateTimeout);
-            updateTimeout = setTimeout(updateSchemaName, 300);
-        };
-
         const observer = new MutationObserver((mutations) => {
             // Only proceed if we're on the "New column" panel
             if (!isNewColumnPanel()) return;
@@ -876,42 +824,48 @@
                 });
             }
 
-            // Performance optimization: Consolidate type/behavior/format observers into a single area observer
-            const columnPropertiesArea = document.querySelector('#tabDataType');
-            if (columnPropertiesArea && !columnPropertiesArea.hasAttribute('data-mf-listening')) {
-                columnPropertiesArea.setAttribute('data-mf-listening', 'true');
-
-                // Single consolidated observer for all type/behavior/format changes
-                const propertiesObserver = new MutationObserver(debouncedUpdate);
-                propertiesObserver.observe(columnPropertiesArea, {
-                    childList: true,
-                    subtree: true,
-                    characterData: true
-                });
+            if (dataTypeButton && !dataTypeButton.hasAttribute('data-mf-listening')) {
+                dataTypeButton.setAttribute('data-mf-listening', 'true');
+                const labelObserver = new MutationObserver(() => setTimeout(updateSchemaName, 100));
+                labelObserver.observe(dataTypeButton, { childList: true, subtree: true, characterData: true });
+                dataTypeButton.addEventListener('click', () => setTimeout(updateSchemaName, 500));
             }
 
-            // Fallback: Individual button click listeners for immediate response
-            if (dataTypeButton && !dataTypeButton.hasAttribute('data-click-listening')) {
-                dataTypeButton.setAttribute('data-click-listening', 'true');
-                dataTypeButton.addEventListener('click', () => setTimeout(debouncedUpdate, 500));
+            if (behaviorButton && !behaviorButton.hasAttribute('data-mf-listening')) {
+                behaviorButton.setAttribute('data-mf-listening', 'true');
+                const behaviorObserver = new MutationObserver(() => setTimeout(updateSchemaName, 100));
+                behaviorObserver.observe(behaviorButton, { childList: true, subtree: true, characterData: true });
+                behaviorButton.addEventListener('click', () => setTimeout(updateSchemaName, 500));
             }
 
-            if (behaviorButton && !behaviorButton.hasAttribute('data-click-listening')) {
-                behaviorButton.setAttribute('data-click-listening', 'true');
-                behaviorButton.addEventListener('click', () => setTimeout(debouncedUpdate, 500));
+            // Listen to format dropdown (Email, Phone, URL, Ticker Symbol, Text Area, Rich Text, Duration, Language, Timezone)
+            if (formatDropdown && !formatDropdown.hasAttribute('data-mf-listening')) {
+                formatDropdown.setAttribute('data-mf-listening', 'true');
+                const formatObserver = new MutationObserver(() => setTimeout(updateSchemaName, 100));
+                formatObserver.observe(formatDropdown, { childList: true, subtree: true, characterData: true });
+                formatDropdown.addEventListener('click', () => setTimeout(updateSchemaName, 500));
             }
 
-            if (formatDropdown && !formatDropdown.hasAttribute('data-click-listening')) {
-                formatDropdown.setAttribute('data-click-listening', 'true');
-                formatDropdown.addEventListener('click', () => setTimeout(debouncedUpdate, 500));
+            // Also listen to the format value element directly for changes
+            const formatValueEl = document.querySelector(SELECTORS.formatValue);
+            if (formatValueEl && !formatValueEl.hasAttribute('data-mf-listening')) {
+                formatValueEl.setAttribute('data-mf-listening', 'true');
+                const formatValueObserver = new MutationObserver(() => setTimeout(updateSchemaName, 100));
+                formatValueObserver.observe(formatValueEl, { childList: true, subtree: true, characterData: true });
+            }
+
+            // Watch the parent container of format value for any DOM changes
+            const formatContainer = document.querySelector('div[data-testid="columnFormat"]');
+            if (formatContainer && !formatContainer.hasAttribute('data-mf-listening')) {
+                formatContainer.setAttribute('data-mf-listening', 'true');
+                const formatContainerObserver = new MutationObserver(() => setTimeout(updateSchemaName, 100));
+                formatContainerObserver.observe(formatContainer, { childList: true, subtree: true, characterData: true });
             }
 
             const multipleChoicesCheckbox = document.querySelector('input[data-testid="multipleChoices"]');
             if (multipleChoicesCheckbox && !multipleChoicesCheckbox.hasAttribute('data-mf-listening')) {
                 multipleChoicesCheckbox.setAttribute('data-mf-listening', 'true');
-                multipleChoicesCheckbox.addEventListener('change', () => {
-                    setTimeout(updateSchemaName, 50);
-                });
+                multipleChoicesCheckbox.addEventListener('change', () => setTimeout(updateSchemaName, 50));
             }
 
             if (isExtensionActive) {

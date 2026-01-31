@@ -254,8 +254,9 @@ function updateStatus(currentEnv, targetEnv) {
     if (IS_DEBUG) {
         statusSection.className = 'status-badge debug-mode';
         statusText.textContent = 'YOU ARE IN DEBUG MODE';
-        useCurrentBtn.disabled = true;
-        useCurrentBtn.title = 'Debug mode active';
+        // Don't disable useCurrentBtn in debug mode - user may still want to set environment
+        useCurrentBtn.disabled = !currentEnvironment;
+        useCurrentBtn.title = currentEnvironment ? 'Set target to current environment' : 'No current environment detected';
         return;
     }
 
