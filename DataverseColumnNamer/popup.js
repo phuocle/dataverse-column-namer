@@ -152,16 +152,10 @@ async function getCurrentEnvironment() {
             return null;
         }
 
-        const result = await chrome.scripting.executeScript({
-            target: { tabId: tab.id },
-            func: () => {
-                const envEl = document.querySelector('div[data-test-id="EnvironmentTitle"]');
-                if (!envEl) return null;
-                return envEl.textContent.replace(/\s+/g, ' ').trim();
-            }
-        });
-
-        const envName = result[0]?.result;
+        // Request environment name from content script
+        const response = await chrome.tabs.sendMessage(tab.id, { action: 'getEnvironment' });
+        
+        const envName = response?.environment;
         currentEnvEl.textContent = envName || 'Could not detect';
         currentEnvironment = envName;
         return envName;

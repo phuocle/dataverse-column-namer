@@ -901,6 +901,15 @@
         }
     }
 
+    // Message listener for popup requests
+    chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+        if (request.action === 'getEnvironment') {
+            const envName = getCurrentEnvironment();
+            sendResponse({ environment: envName });
+        }
+        return true; // Keep the message channel open for async response
+    });
+
     init();
 
 })();
