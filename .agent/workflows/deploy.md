@@ -43,7 +43,10 @@ New-Item -ItemType Directory -Force -Path $tempDir
 
 ### 4. Copy files to temporary directory
 ```powershell
-Copy-Item -Path "./manifest.json", "./styles.css", "./popup.css", "./popup.html", "./icons" -Destination $tempDir -Recurse -Force
+# Copy individual files
+Copy-Item -Path "./manifest.json", "./styles.css", "./popup.css", "./popup.html" -Destination $tempDir -Force
+# Copy icons directory recursively
+Copy-Item -Path "./icons" -Destination $tempDir -Recurse -Force
 ```
 
 ### 5. Copy and modify content.js with IS_DEBUG = false
