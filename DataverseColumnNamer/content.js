@@ -1,7 +1,10 @@
 (function () {
     'use strict';
 
-    // Set to true for debugging - all suffixes become __[type] pattern
+    // Debug mode: Set to true for development/testing. When enabled:
+    // - All suffixes use the __[type] pattern for easy identification
+    // - User-configured settings from storage are bypassed
+    // - Ensures predictable behavior during debugging
     const IS_DEBUG = false;
 
     const CONFIG = {
@@ -94,7 +97,11 @@
     const STORAGE_KEY = 'DataverseColumnNamer';
 
     async function loadSettings() {
-        // When IS_DEBUG is true, always use DEBUG_SUFFIXES (ignore storage)
+        // Debug mode behavior: When IS_DEBUG is true, always use DEBUG_SUFFIXES to ensure
+        // consistent, predictable suffix patterns (__[type]) during development and testing.
+        // This bypasses user-configured storage to prevent unexpected behavior that could
+        // complicate debugging. Note: The popup UI will still be accessible in debug mode,
+        // but any settings changes made there will not take effect until IS_DEBUG is set to false.
         if (IS_DEBUG) {
             currentSuffixes = { ...DEBUG_SUFFIXES };
             currentNamingConvention = 'underscore_lowercase';
