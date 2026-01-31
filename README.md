@@ -142,7 +142,7 @@ You can use the deployment workflow:
 # From DataverseColumnNamer directory
 cd DataverseColumnNamer
 
-# Run the deploy workflow (see .agent/workflows/deploy.md)
+# Run the deploy workflow (see ./.agent/workflows/deploy.md from the repository root)
 # This will create deploy/DataverseColumnNamer.zip
 ```
 
