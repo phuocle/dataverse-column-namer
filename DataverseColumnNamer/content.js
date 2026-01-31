@@ -119,15 +119,19 @@
 
         const s = currentSuffixes;
 
+        // Cache dataType and behaviorType once to avoid repeated DOM queries
+        const dataType = getDataType();
+        const behaviorType = getBehaviorType();
+
         // Behavior-based suffixes (take priority)
-        if (isCalculatedBehavior()) {
+        if (behaviorType === 'calculated') {
             if (s.calculated && !schemaName.endsWith(s.calculated)) {
                 return schemaName + s.calculated;
             }
             return schemaName;
         }
 
-        if (isRollupBehavior()) {
+        if (behaviorType === 'rollup') {
             if (s.rollup && !schemaName.endsWith(s.rollup)) {
                 return schemaName + s.rollup;
             }
@@ -135,14 +139,14 @@
         }
 
         // Relationship Types
-        if (isCustomerType()) {
+        if (dataType === 'customer') {
             if (s.customer && !schemaName.endsWith(s.customer)) {
                 return schemaName + s.customer;
             }
             return schemaName;
         }
 
-        if (isLookupType()) {
+        if (dataType === 'lookup') {
             if (s.lookup && !schemaName.endsWith(s.lookup)) {
                 return schemaName + s.lookup;
             }
@@ -150,14 +154,14 @@
         }
 
         // Choice Types
-        if (isYesNoType()) {
+        if (dataType === 'yes/no') {
             if (s.yn && !schemaName.endsWith(s.yn)) {
                 return schemaName + s.yn;
             }
             return schemaName;
         }
 
-        if (isChoiceType()) {
+        if (dataType === 'choice') {
             if (isMultipleChoices()) {
                 if (s.choices && !schemaName.endsWith(s.choices)) {
                     return schemaName + s.choices;
@@ -171,7 +175,7 @@
         }
 
         // Computed Types
-        if (isFormulaType()) {
+        if (dataType === 'formula') {
             if (s.formula && !schemaName.endsWith(s.formula)) {
                 return schemaName + s.formula;
             }
@@ -179,35 +183,35 @@
         }
 
         // Number Types
-        if (isCurrencyType()) {
+        if (dataType === 'currency') {
             if (s.currency && !schemaName.endsWith(s.currency)) {
                 return schemaName + s.currency;
             }
             return schemaName;
         }
 
-        if (isWholeNumberType()) {
+        if (dataType === 'whole number') {
             if (s.wholenumber && !schemaName.endsWith(s.wholenumber)) {
                 return schemaName + s.wholenumber;
             }
             return schemaName;
         }
 
-        if (isDecimalType()) {
+        if (dataType === 'decimal') {
             if (s.decimal && !schemaName.endsWith(s.decimal)) {
                 return schemaName + s.decimal;
             }
             return schemaName;
         }
 
-        if (isFloatType()) {
+        if (dataType === 'float') {
             if (s.float && !schemaName.endsWith(s.float)) {
                 return schemaName + s.float;
             }
             return schemaName;
         }
 
-        if (isLanguageType()) {
+        if (dataType === 'language') {
             if (s.language && !schemaName.endsWith(s.language)) {
                 return schemaName + s.language;
             }
@@ -215,28 +219,28 @@
         }
 
         // Date/Time Types
-        if (isDateTimeType()) {
+        if (dataType === 'date and time') {
             if (s.datetime && !schemaName.endsWith(s.datetime)) {
                 return schemaName + s.datetime;
             }
             return schemaName;
         }
 
-        if (isDateOnlyType()) {
+        if (dataType === 'date only') {
             if (s.dateonly && !schemaName.endsWith(s.dateonly)) {
                 return schemaName + s.dateonly;
             }
             return schemaName;
         }
 
-        if (isDurationType()) {
+        if (dataType === 'duration') {
             if (s.duration && !schemaName.endsWith(s.duration)) {
                 return schemaName + s.duration;
             }
             return schemaName;
         }
 
-        if (isTimezoneType()) {
+        if (dataType === 'timezone') {
             if (s.timezone && !schemaName.endsWith(s.timezone)) {
                 return schemaName + s.timezone;
             }
@@ -244,70 +248,70 @@
         }
 
         // Text Types
-        if (isTextType()) {
+        if (dataType === 'single line of text') {
             if (s.text && !schemaName.endsWith(s.text)) {
                 return schemaName + s.text;
             }
             return schemaName;
         }
 
-        if (isTextAreaType()) {
+        if (dataType === 'text_area') {
             if (s.text_area && !schemaName.endsWith(s.text_area)) {
                 return schemaName + s.text_area;
             }
             return schemaName;
         }
 
-        if (isTextRichTextType()) {
+        if (dataType === 'text_richtext') {
             if (s.text_richtext && !schemaName.endsWith(s.text_richtext)) {
                 return schemaName + s.text_richtext;
             }
             return schemaName;
         }
 
-        if (isMultilineType()) {
+        if (dataType === 'multiline') {
             if (s.multiline && !schemaName.endsWith(s.multiline)) {
                 return schemaName + s.multiline;
             }
             return schemaName;
         }
 
-        if (isMultilineRichTextType()) {
+        if (dataType === 'multiline_richtext') {
             if (s.multiline_richtext && !schemaName.endsWith(s.multiline_richtext)) {
                 return schemaName + s.multiline_richtext;
             }
             return schemaName;
         }
 
-        if (isAutoNumberType()) {
+        if (dataType === 'autonumber') {
             if (s.autonumber && !schemaName.endsWith(s.autonumber)) {
                 return schemaName + s.autonumber;
             }
             return schemaName;
         }
 
-        if (isEmailType()) {
+        if (dataType === 'email') {
             if (s.email && !schemaName.endsWith(s.email)) {
                 return schemaName + s.email;
             }
             return schemaName;
         }
 
-        if (isPhoneType()) {
+        if (dataType === 'phone') {
             if (s.phone && !schemaName.endsWith(s.phone)) {
                 return schemaName + s.phone;
             }
             return schemaName;
         }
 
-        if (isUrlType()) {
+        if (dataType === 'url') {
             if (s.url && !schemaName.endsWith(s.url)) {
                 return schemaName + s.url;
             }
             return schemaName;
         }
 
-        if (isTickerType()) {
+        if (dataType === 'ticker symbol') {
             if (s.ticker && !schemaName.endsWith(s.ticker)) {
                 return schemaName + s.ticker;
             }
@@ -315,14 +319,14 @@
         }
 
         // File Types
-        if (isFileType()) {
+        if (dataType === 'file') {
             if (s.file && !schemaName.endsWith(s.file)) {
                 return schemaName + s.file;
             }
             return schemaName;
         }
 
-        if (isImageType()) {
+        if (dataType === 'image') {
             if (s.image && !schemaName.endsWith(s.image)) {
                 return schemaName + s.image;
             }
@@ -565,18 +569,6 @@
         return '';
     }
 
-    function isLookupType() {
-        return getDataType() === 'lookup';
-    }
-
-    function isYesNoType() {
-        return getDataType() === 'yes/no';
-    }
-
-    function isChoiceType() {
-        return getDataType() === 'choice';
-    }
-
     function isMultipleChoices() {
         const checkbox = document.querySelector('input[data-testid="multipleChoices"]');
         return checkbox ? checkbox.checked : false;
@@ -588,110 +580,6 @@
             return behaviorOption.textContent.trim().toLowerCase();
         }
         return '';
-    }
-
-    function isCalculatedBehavior() {
-        return getBehaviorType() === 'calculated';
-    }
-
-    function isRollupBehavior() {
-        return getBehaviorType() === 'rollup';
-    }
-
-    function isCustomerType() {
-        return getDataType() === 'customer';
-    }
-
-    function isFormulaType() {
-        return getDataType() === 'formula';
-    }
-
-    // Number Types
-    function isCurrencyType() {
-        return getDataType() === 'currency';
-    }
-
-    function isWholeNumberType() {
-        return getDataType() === 'whole number';
-    }
-
-    function isDecimalType() {
-        return getDataType() === 'decimal';
-    }
-
-    function isFloatType() {
-        return getDataType() === 'float';
-    }
-
-    function isLanguageType() {
-        return getDataType() === 'language';
-    }
-
-    // Date/Time Types
-    function isDateTimeType() {
-        return getDataType() === 'date and time';
-    }
-
-    function isDateOnlyType() {
-        return getDataType() === 'date only';
-    }
-
-    function isDurationType() {
-        return getDataType() === 'duration';
-    }
-
-    function isTimezoneType() {
-        return getDataType() === 'timezone';
-    }
-
-    // Text Types
-    function isTextType() {
-        return getDataType() === 'single line of text';
-    }
-
-    function isTextAreaType() {
-        return getDataType() === 'text_area';
-    }
-
-    function isTextRichTextType() {
-        return getDataType() === 'text_richtext';
-    }
-
-    function isMultilineType() {
-        return getDataType() === 'multiline';
-    }
-
-    function isMultilineRichTextType() {
-        return getDataType() === 'multiline_richtext';
-    }
-
-    function isAutoNumberType() {
-        return getDataType() === 'autonumber';
-    }
-
-    function isEmailType() {
-        return getDataType() === 'email';
-    }
-
-    function isPhoneType() {
-        return getDataType() === 'phone';
-    }
-
-    function isUrlType() {
-        return getDataType() === 'url';
-    }
-
-    function isTickerType() {
-        return getDataType() === 'ticker symbol';
-    }
-
-    // File Types
-    function isFileType() {
-        return getDataType() === 'file';
-    }
-
-    function isImageType() {
-        return getDataType() === 'image';
     }
 
     let currentNamingConvention = 'underscore_lowercase';

@@ -107,6 +107,9 @@ body {
 .status-badge.active {
     background: var(--colorStatusSuccessBackground);
     color: var(--colorStatusSuccessForeground);
+    border: 2px solid var(--colorStatusSuccessForeground);
+    width: 100%;
+    justify-content: center;
 }
 
 .status-badge.inactive {
@@ -124,6 +127,10 @@ body {
 }
 
 .status-badge.debug-mode .status-dot {
+    display: none;
+}
+
+.status-badge.active .status-dot {
     display: none;
 }
 

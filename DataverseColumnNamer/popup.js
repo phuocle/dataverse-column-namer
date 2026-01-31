@@ -250,32 +250,32 @@ function useCurrentEnv() {
 }
 
 function updateStatus(currentEnv, targetEnv) {
-    // Show debug mode warning instead of normal status
-    if (IS_DEBUG) {
-        statusSection.className = 'status-badge debug-mode';
-        statusText.textContent = 'YOU ARE IN DEBUG MODE';
-        // Don't disable useCurrentBtn in debug mode - user may still want to set environment
-        useCurrentBtn.disabled = !currentEnvironment;
-        useCurrentBtn.title = currentEnvironment ? 'Set target to current environment' : 'No current environment detected';
-        return;
-    }
-
     const normalizedCurrent = normalizeString(currentEnv);
     const normalizedTarget = normalizeString(targetEnv);
 
-    if (!normalizedTarget) {
+    // Status text & badge - DEBUG mode shows its own message
+    if (IS_DEBUG) {
+        statusSection.className = 'status-badge debug-mode';
+        statusText.textContent = 'YOU ARE IN DEBUG MODE';
+    } else if (!normalizedTarget) {
         statusSection.className = 'status-badge inactive';
         statusText.textContent = 'Disabled (no environment configured)';
-        useCurrentBtn.disabled = false;
-        useCurrentBtn.title = 'Use current environment';
     } else if (normalizedCurrent === normalizedTarget) {
         statusSection.className = 'status-badge active';
         statusText.textContent = 'Active (environment matched)';
-        useCurrentBtn.disabled = true;
-        useCurrentBtn.title = 'Current environment already selected';
     } else {
         statusSection.className = 'status-badge inactive';
         statusText.textContent = 'Inactive (environment mismatch)';
+    }
+
+    // Button logic - same for DEBUG and PRODUCTION
+    if (!currentEnvironment) {
+        useCurrentBtn.disabled = true;
+        useCurrentBtn.title = 'No current environment detected';
+    } else if (normalizedCurrent === normalizedTarget) {
+        useCurrentBtn.disabled = true;
+        useCurrentBtn.title = 'Current environment already selected';
+    } else {
         useCurrentBtn.disabled = false;
         useCurrentBtn.title = 'Use current environment';
     }
