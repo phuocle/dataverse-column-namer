@@ -723,7 +723,7 @@
 
     function toRemoveSpaces(input) {
         if (!input) return '';
-        return input.trim().replace(/\s+/g, '').toLowerCase();
+        return input.trim().replace(/\s+/g, '');
     }
 
     function applyNamingConvention(str) {
