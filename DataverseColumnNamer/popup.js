@@ -417,14 +417,12 @@ function importConfig(event) {
                     }
 
                     // Validate string doesn't contain potentially dangerous content
-                    // Check for HTML tags, javascript:, data: URLs, and common XSS patterns
+                    // Check for HTML tags, javascript:, data: URLs, and event handlers
                     const dangerousPatterns = [
                         /<[^>]*>/g,              // HTML tags
                         /javascript:/gi,          // javascript: URLs
                         /data:/gi,                // data: URLs
-                        /on\w+\s*=/gi,           // Event handlers like onclick=
-                        /&#/g,                    // HTML entities
-                        /&\w+;/g                  // Named entities
+                        /on\w+\s*=/gi            // Event handlers like onclick=
                     ];
                     
                     if (dangerousPatterns.some(pattern => pattern.test(value))) {
