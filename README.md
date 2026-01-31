@@ -104,7 +104,7 @@ The extension has a built-in debug mode for development:
 2. Navigate to `chrome://extensions` (or `edge://extensions`)
 3. Enable **Developer mode**
 4. Click **Load unpacked**
-5. Select the `src` folder
+5. Select the `DataverseColumnNamer` folder (the folder containing `manifest.json`)
 
 ### Making Changes
 
