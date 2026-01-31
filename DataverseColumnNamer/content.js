@@ -8,6 +8,19 @@
         activeClass: 'dcn-env-active'
     };
 
+    // Debounce utility to prevent excessive function calls
+    function debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
+    }
+
     const DEBUG_SUFFIXES = {
         // Relationship Types
         lookup: '__lookup',
@@ -615,7 +628,7 @@
         }
     }
 
-    function updateSchemaName() {
+    function updateSchemaNameCore() {
         if (!isExtensionActive) return;
 
         const displayInput = document.querySelector(SELECTORS.displayNameInput);
@@ -631,6 +644,9 @@
 
         setReactInputValue(schemaInput, schemaName);
     }
+
+    // Debounced version to prevent excessive calls during rapid DOM changes
+    const updateSchemaName = debounce(updateSchemaNameCore, 300);
 
     function isNewColumnPanel() {
         const headerTitle = document.querySelector('h1[id$="-headerText"]');
