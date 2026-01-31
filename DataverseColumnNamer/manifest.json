@@ -6,6 +6,8 @@
   "author": "PhuocLe.NET",
   "homepage_url": "https://github.com/phuocle/dataverse-column-namer",
   "permissions": [
+    "activeTab",
+    "scripting",
     "storage"
   ],
   "action": {
