@@ -2,7 +2,7 @@
     'use strict';
 
     // Set to true for debugging - all suffixes become __[type] pattern
-    const IS_DEBUG = true;
+    const IS_DEBUG = false;
 
     const CONFIG = {
         activeClass: 'dcn-env-active'
@@ -94,7 +94,11 @@
     const STORAGE_KEY = 'DataverseColumnNamer';
 
     async function loadSettings() {
-        // When IS_DEBUG is true, always use DEBUG_SUFFIXES (ignore storage)
+        // When IS_DEBUG is true, always use DEBUG_SUFFIXES (ignore storage).
+        // This ensures consistent debug behavior: all suffixes follow the __[type] pattern
+        // for easy identification during development, regardless of saved configuration.
+        // User can still access the popup UI in debug mode, but settings won't take effect
+        // until IS_DEBUG is set to false.
         if (IS_DEBUG) {
             currentSuffixes = { ...DEBUG_SUFFIXES };
             currentNamingConvention = 'underscore_lowercase';
@@ -746,15 +750,6 @@
                 break;
         }
 
-        // Sanitize invalid characters for all naming conventions to ensure valid schema names
-        if (currentNamingConvention === 'underscore_lowercase') {
-            // Preserve existing behavior: only lowercase letters, digits, and underscores
-            result = result.replace(/[^a-z0-9_]/g, '');
-        } else {
-            // For other conventions, allow letters (any case), digits, and underscores
-            result = result.replace(/[^a-zA-Z0-9_]/g, '');
-        }
-
         return result;
     }
 
@@ -793,11 +788,17 @@
     }
 
     function setReactInputValue(input, value) {
-        const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
+        const valueDescriptor = Object.getOwnPropertyDescriptor(
             window.HTMLInputElement.prototype, 'value'
-        ).set;
+        );
 
-        nativeInputValueSetter.call(input, value);
+        if (valueDescriptor && typeof valueDescriptor.set === 'function') {
+            valueDescriptor.set.call(input, value);
+        } else {
+            // Fallback: directly set the value if the native setter is unavailable
+            input.value = value;
+        }
+
         const inputEvent = new Event('input', { bubbles: true });
         input.dispatchEvent(inputEvent);
     }

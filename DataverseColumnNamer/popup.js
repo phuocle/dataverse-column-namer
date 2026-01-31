@@ -1,7 +1,7 @@
 const STORAGE_KEY = 'DataverseColumnNamer';
 
 // Set to true for debugging - all suffixes become __[type] pattern
-const IS_DEBUG = true;
+const IS_DEBUG = false;
 
 const currentEnvEl = document.getElementById('currentEnv');
 const statusSection = document.getElementById('statusSection');
@@ -308,19 +308,32 @@ importBtn.addEventListener('click', () => importFile.click());
 importFile.addEventListener('change', importConfig);
 
 function exportConfig() {
+    // Warn if exporting in debug mode
+    if (IS_DEBUG) {
+        const debugWarning = confirm(
+            'WARNING: You are exporting configuration while in DEBUG MODE.\n\n' +
+            'The exported config will contain debug suffixes (e.g., __lookup, __choice).\n' +
+            'If you import this config in production mode (IS_DEBUG=false), ' +
+            'you will have debug-style suffixes.\n\n' +
+            'Do you want to continue with the export?'
+        );
+        
+        if (!debugWarning) {
+            showMessage('Export cancelled');
+            return;
+        }
+    }
+
     const config = {
         NamingConvention: namingConventionSelect.value,
         Suffixes: {}
     };
 
-    // Export actual values being used (from input value or DEFAULT_SUFFIXES)
+    // Export only non-empty values that user has explicitly set
     for (const [key, input] of Object.entries(suffixInputs)) {
         const val = input.value.trim();
         if (val) {
             config.Suffixes[key] = val;
-        } else if (DEFAULT_SUFFIXES[key]) {
-            // If input is empty, use default suffix
-            config.Suffixes[key] = DEFAULT_SUFFIXES[key];
         }
     }
 
@@ -348,16 +361,30 @@ function importConfig(event) {
         try {
             const config = JSON.parse(e.target.result);
 
-            // Apply naming convention
-            if (config.NamingConvention) {
-                namingConventionSelect.value = config.NamingConvention;
+            // Validate config structure to prevent malformed or malicious imports
+            if (typeof config !== 'object' || config === null) {
+                showMessage('Error: Invalid config format');
+                return;
             }
 
-            // Apply suffixes
-            if (config.Suffixes) {
+            // Validate and apply naming convention
+            if (config.NamingConvention) {
+                const validConventions = ['underscore_lowercase', 'underscore_preserve', 'pascalCase', 'camelCase', 'remove_spaces'];
+                if (typeof config.NamingConvention === 'string' && validConventions.includes(config.NamingConvention)) {
+                    namingConventionSelect.value = config.NamingConvention;
+                } else {
+                    showMessage('Warning: Invalid naming convention ignored');
+                }
+            }
+
+            // Validate and apply suffixes
+            if (config.Suffixes && typeof config.Suffixes === 'object') {
                 for (const [key, value] of Object.entries(config.Suffixes)) {
-                    if (suffixInputs[key]) {
-                        suffixInputs[key].value = value;
+                    // Only apply if the key exists in our suffix inputs and value is a safe string
+                    if (suffixInputs[key] && typeof value === 'string') {
+                        // Sanitize the value to prevent XSS by only allowing safe characters
+                        const sanitizedValue = value.replace(/[<>"'`]/g, '');
+                        suffixInputs[key].value = sanitizedValue;
                     }
                 }
             }
