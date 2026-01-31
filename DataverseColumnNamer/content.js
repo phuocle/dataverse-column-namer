@@ -2,7 +2,7 @@
     'use strict';
 
     // Set to true for debugging - all suffixes become __[type] pattern
-    const IS_DEBUG = true;
+    const IS_DEBUG = false;
 
     const CONFIG = {
         activeClass: 'dcn-env-active'
