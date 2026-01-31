@@ -658,6 +658,7 @@
     function setupSchemaNameOverride() {
         const observer = new MutationObserver((mutations) => {
             // Only proceed if we're on the "New column" panel
+            // If it's "Edit column", we stop here. Use return to skip Step 1 (Listener) & Step 2 (Function)
             if (!isNewColumnPanel()) return;
 
             const displayInput = document.querySelector(SELECTORS.displayNameInput);
