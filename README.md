@@ -74,16 +74,16 @@ cd dataverse-column-namer
 ### Project Structure
 
 ```
-DataverseColumnNamer/
-├── manifest.json       # Extension manifest (Manifest V3)
-├── content.js          # Main logic for schema name generation
-├── popup.html          # Extension popup UI
-├── popup.js            # Popup logic
-├── popup.css           # Fluent UI-inspired styles
-├── styles.css          # Content script styles
-└── icons/              # Extension icons
-deploy/
-└── (generated packages)
+DataverseColumnNamer/       # Extension source files
+├── manifest.json           # Extension manifest (Manifest V3)
+├── content.js              # Main logic for schema name generation
+├── popup.html              # Extension popup UI
+├── popup.js                # Popup logic
+├── popup.css               # Fluent UI-inspired styles
+├── styles.css              # Content script styles
+└── icons/                  # Extension icons
+deploy/                     # Build artifacts and deployment packages
+└── DataverseColumnNamer.zip
 ```
 
 ### Debug Mode
