@@ -17,7 +17,8 @@ This workflow creates a production-ready ZIP package for submitting to Chrome We
 ## Output Structure
 
 ```
-src3/                              ← Repository root
+repo-root/                         ← Repository root
+├── DataverseColumnNamer/          ← Working directory for this workflow
 └── deploy/                        ← Deployment folder (committed to git)
     └── DataverseColumnNamer.zip   ← Ready for Chrome/Edge Store upload
 ```
