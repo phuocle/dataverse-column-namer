@@ -328,6 +328,18 @@ exportBtn.addEventListener('click', exportConfig);
 importBtn.addEventListener('click', () => importFile.click());
 importFile.addEventListener('change', importConfig);
 
+// Manage aria-expanded for accordion accessibility
+const advancedAccordion = document.getElementById('advancedAccordion');
+if (advancedAccordion) {
+    // Set initial state
+    advancedAccordion.setAttribute('aria-expanded', advancedAccordion.open ? 'true' : 'false');
+    
+    // Update aria-expanded when accordion state changes
+    advancedAccordion.addEventListener('toggle', () => {
+        advancedAccordion.setAttribute('aria-expanded', advancedAccordion.open ? 'true' : 'false');
+    });
+}
+
 function exportConfig() {
     const config = {
         NamingConvention: namingConventionSelect.value,
