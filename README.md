@@ -68,7 +68,7 @@ Click the extension icon to configure:
 ```bash
 # Fork this repository on GitHub first, then:
 git clone https://github.com/YOUR_USERNAME/dataverse-column-namer.git
-cd dataverse-column-namer/DataverseColumnNamer
+cd dataverse-column-namer
 ```
 
 ### Project Structure
