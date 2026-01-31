@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "description": "Auto-generates schema names with configurable suffixes for Dataverse columns in PowerApps",
   "author": "PhuocLe.NET",
+  "homepage_url": "https://github.com/phuocle/dataverse-column-namer",
   "permissions": [
     "activeTab",
     "scripting",
