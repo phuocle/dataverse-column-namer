@@ -19,7 +19,7 @@ This workflow creates a production-ready ZIP package for submitting to Chrome We
 ```
 repo-root/                         ← Repository root
 ├── DataverseColumnNamer/          ← Working directory for this workflow
-└── deploy/                        ← Deployment folder (committed to git)
+└── deploy/                        ← Deployment folder (gitignored)
     └── DataverseColumnNamer.zip   ← Ready for Chrome/Edge Store upload
 ```
 
@@ -73,16 +73,13 @@ Files to update:
 - `./content.js` (line 5)
 - `./popup.js` (line 4)
 
-## Git Commit
+## Distribution
 
-The `deploy/` folder is **included in git** for version tracking:
+The `deploy/` folder is **excluded from git** (gitignored). Use GitHub Releases to distribute the extension package:
 
-```powershell
-cd ..
-git add deploy/DataverseColumnNamer.zip
-git commit -m "chore: build production package v1.0.0 for store submission"
-git push
-```
+1. Create a new release on GitHub
+2. Upload `deploy/DataverseColumnNamer.zip` as a release asset
+3. Users can download from the Releases page
 
 ## Important Notes
 
@@ -91,7 +88,7 @@ git push
 - **Screenshots:** Prepare 1280x800 screenshots before store submission
 - **Package Size:** Should be < 5MB for stores
 - **Review Time:** Chrome 1-3 days, Edge 1-5 days
-- **Deploy Location:** `../deploy/` (root level, committed to git)
+- **Deploy Location:** `../deploy/` (root level, gitignored)
 
 ## Package Contents Checklist
 

@@ -32,6 +32,9 @@ yarn.lock
 dist/
 build/
 
+# Deploy artifacts
+deploy/*.zip
+
 # Environment files
 .env
 .env.local
