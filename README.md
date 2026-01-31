@@ -75,18 +75,15 @@ cd dataverse-column-namer
 
 ```
 DataverseColumnNamer/
-├── src/
-│   ├── manifest.json       # Extension manifest (Manifest V3)
-│   ├── content.js          # Main logic for schema name generation
-│   ├── popup.html          # Extension popup UI
-│   ├── popup.js            # Popup logic
-│   ├── popup.css           # Fluent UI-inspired styles
-│   ├── styles.css          # Content script styles
-│   └── icons/              # Extension icons
-├── docs/
-│   └── DISTRIBUTION-GUIDE.md
-└── deploy/
-    └── (generated packages)
+├── manifest.json       # Extension manifest (Manifest V3)
+├── content.js          # Main logic for schema name generation
+├── popup.html          # Extension popup UI
+├── popup.js            # Popup logic
+├── popup.css           # Fluent UI-inspired styles
+├── styles.css          # Content script styles
+└── icons/              # Extension icons
+deploy/
+└── (generated packages)
 ```
 
 ### Debug Mode
@@ -113,7 +110,7 @@ The extension has a built-in debug mode for development:
    git checkout -b feature/your-feature-name
    ```
 
-2. Make your changes in the `src/` directory
+2. Make your changes in the `DataverseColumnNamer/` directory
 
 3. Test thoroughly:
    - Load the extension in developer mode
