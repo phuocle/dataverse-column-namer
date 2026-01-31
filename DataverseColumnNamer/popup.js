@@ -1,6 +1,10 @@
 const STORAGE_KEY = 'DataverseColumnNamer';
 
-// Set to true for debugging - all suffixes become __[type] pattern
+// Debug mode: Set to true for development/testing. When enabled:
+// - All suffixes use the __[type] pattern for easy identification
+// - Suffix inputs are disabled in the UI to prevent confusion
+// - Settings changes are allowed but won't take effect until IS_DEBUG is false
+// This ensures predictable behavior during debugging at the cost of ignoring user configuration.
 const IS_DEBUG = false;
 
 // Valid naming convention options
