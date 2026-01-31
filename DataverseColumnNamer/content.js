@@ -911,7 +911,21 @@
             }
         });
 
-        observer.observe(document.body, {
+        // Prefer to observe only the column panel area for performance.
+        // If we can't find it yet, fall back to observing the whole body
+        // to preserve existing behavior.
+        let observerTarget = document.body;
+        const headerTitle = document.querySelector('h1[id$="-headerText"]');
+        if (headerTitle) {
+            const headerStack = headerTitle.closest('.ms-Stack');
+            if (headerStack && headerStack.parentElement && headerStack.parentElement.parentElement) {
+                // This mirrors the structure used in injectPanelBadge:
+                // headerStack -> mainContentArea -> panel container
+                observerTarget = headerStack.parentElement.parentElement;
+            }
+        }
+
+        observer.observe(observerTarget, {
             childList: true,
             subtree: true
         });
