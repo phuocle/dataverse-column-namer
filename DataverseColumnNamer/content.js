@@ -747,35 +747,44 @@
 
     function toRemoveSpaces(input) {
         if (!input) return '';
-        return input.trim().replace(/\s+/g, '').toLowerCase();
+        return input.trim().replace(/\s+/g, ''); // Remove spaces only, preserve case
     }
 
     function applyNamingConvention(str) {
         if (!str) return '';
 
+        let result = '';
+
         switch (currentNamingConvention) {
             case 'underscore_preserve':
-                return toUnderscorePreserve(str);
+                result = toUnderscorePreserve(str);
+                break;
             case 'pascalCase':
-                return toPascalCase(str);
+                result = toPascalCase(str);
+                break;
             case 'camelCase':
-                return toCamelCase(str);
+                result = toCamelCase(str);
+                break;
             case 'remove_spaces':
-                return toRemoveSpaces(str);
+                result = toRemoveSpaces(str);
+                break;
             case 'underscore_lowercase':
             default:
-                return toUnderscoreLowercase(str).replace(/[^a-z0-9_]/g, '');
+                result = toUnderscoreLowercase(str);
+                break;
         }
+
+        // Remove all invalid characters for Dataverse schema names (only a-zA-Z0-9_ allowed)
+        result = result.replace(/[^a-zA-Z0-9_]/g, '');
+
+        return result;
     }
 
     function toSnakeCase(str) {
         if (!str) return '';
 
-        let result = applyNamingConvention(str);
-
-        result = result.replace(/[^a-zA-Z0-9_]/g, '');
-
-        return result;
+        // applyNamingConvention already filters invalid characters
+        return applyNamingConvention(str);
     }
 
     function setReactInputValue(input, value) {
