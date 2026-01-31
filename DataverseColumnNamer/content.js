@@ -397,11 +397,6 @@
         });
     }
 
-    function normalizeString(str) {
-        if (!str) return '';
-        return str.replace(/\s+/g, ' ').trim();
-    }
-
     function getCurrentEnvironment() {
         const envEl = document.querySelector('div[data-test-id="EnvironmentTitle"]');
         return envEl ? normalizeString(envEl.textContent) : null;

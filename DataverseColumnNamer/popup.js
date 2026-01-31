@@ -166,11 +166,6 @@ const PROD_SUFFIXES = {
 
 const DEFAULT_SUFFIXES = IS_DEBUG ? DEBUG_SUFFIXES : PROD_SUFFIXES;
 
-function normalizeString(str) {
-    if (!str) return '';
-    return str.replace(/\s+/g, ' ').trim();
-}
-
 let currentEnvironment = null;
 
 async function getCurrentEnvironment() {
