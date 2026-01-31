@@ -371,11 +371,6 @@
         formatValue: 'div[data-testid="columnFormat"] span'
     };
 
-    function isHighlightActive() {
-        const envBtn = document.querySelector('div[data-test-id="EnvironmentTitle"]')?.closest('button');
-        return envBtn ? envBtn.classList.contains(CONFIG.activeClass) : false;
-    }
-
     function highlightEnvironmentButton() {
         const envTitle = document.querySelector('div[data-test-id="EnvironmentTitle"]');
         if (!envTitle) return;
