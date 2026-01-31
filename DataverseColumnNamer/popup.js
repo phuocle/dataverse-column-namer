@@ -3,6 +3,27 @@ const STORAGE_KEY = 'DataverseColumnNamer';
 // Set to true for debugging - all suffixes become __[type] pattern
 const IS_DEBUG = true;
 
+// Valid naming convention options
+const VALID_NAMING_CONVENTIONS = [
+    'underscore_lowercase',
+    'underscore_preserve',
+    'pascalCase',
+    'camelCase',
+    'remove_spaces'
+];
+
+// Valid suffix keys
+const VALID_SUFFIX_KEYS = [
+    'lookup', 'customer',
+    'choice', 'choices', 'yn',
+    'calculated', 'rollup', 'formula',
+    'currency', 'wholenumber', 'decimal', 'float', 'language',
+    'datetime', 'dateonly', 'duration', 'timezone',
+    'text', 'text_area', 'text_richtext', 'multiline', 'multiline_richtext',
+    'autonumber', 'email', 'phone', 'url', 'ticker',
+    'file', 'image'
+];
+
 const currentEnvEl = document.getElementById('currentEnv');
 const statusSection = document.getElementById('statusSection');
 const statusText = document.getElementById('statusText');
@@ -348,14 +369,60 @@ function importConfig(event) {
         try {
             const config = JSON.parse(e.target.result);
 
-            // Apply naming convention
+            // Validate config is an object
+            if (!config || typeof config !== 'object' || Array.isArray(config)) {
+                showMessage('Error: Invalid config format');
+                return;
+            }
+
+            // Protect against prototype pollution
+            if ('__proto__' in config || 'constructor' in config || 'prototype' in config) {
+                showMessage('Error: Invalid config - contains forbidden keys');
+                return;
+            }
+
+            // Validate and apply naming convention
             if (config.NamingConvention) {
+                if (!VALID_NAMING_CONVENTIONS.includes(config.NamingConvention)) {
+                    showMessage('Error: Invalid naming convention');
+                    return;
+                }
                 namingConventionSelect.value = config.NamingConvention;
             }
 
-            // Apply suffixes
+            // Validate and apply suffixes
             if (config.Suffixes) {
+                if (typeof config.Suffixes !== 'object' || Array.isArray(config.Suffixes)) {
+                    showMessage('Error: Invalid suffixes format');
+                    return;
+                }
+
+                // Protect against prototype pollution in Suffixes
+                if ('__proto__' in config.Suffixes || 'constructor' in config.Suffixes || 'prototype' in config.Suffixes) {
+                    showMessage('Error: Invalid suffixes - contains forbidden keys');
+                    return;
+                }
+
                 for (const [key, value] of Object.entries(config.Suffixes)) {
+                    // Validate key is in the expected list
+                    if (!VALID_SUFFIX_KEYS.includes(key)) {
+                        showMessage(`Error: Invalid suffix key: ${key}`);
+                        return;
+                    }
+
+                    // Validate value is a safe string
+                    if (typeof value !== 'string') {
+                        showMessage(`Error: Suffix value must be a string for key: ${key}`);
+                        return;
+                    }
+
+                    // Validate string doesn't contain HTML/script tags to prevent XSS
+                    if (/<[^>]*>/g.test(value)) {
+                        showMessage(`Error: Suffix value contains invalid characters for key: ${key}`);
+                        return;
+                    }
+
+                    // Apply the validated suffix
                     if (suffixInputs[key]) {
                         suffixInputs[key].value = value;
                     }
