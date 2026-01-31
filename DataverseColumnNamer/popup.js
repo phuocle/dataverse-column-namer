@@ -416,8 +416,18 @@ function importConfig(event) {
                         return;
                     }
 
-                    // Validate string doesn't contain HTML/script tags to prevent XSS
-                    if (/<[^>]*>/g.test(value)) {
+                    // Validate string doesn't contain potentially dangerous content
+                    // Check for HTML tags, javascript:, data: URLs, and common XSS patterns
+                    const dangerousPatterns = [
+                        /<[^>]*>/g,              // HTML tags
+                        /javascript:/gi,          // javascript: URLs
+                        /data:/gi,                // data: URLs
+                        /on\w+\s*=/gi,           // Event handlers like onclick=
+                        /&#/g,                    // HTML entities
+                        /&\w+;/g                  // Named entities
+                    ];
+                    
+                    if (dangerousPatterns.some(pattern => pattern.test(value))) {
                         showMessage(`Error: Suffix value contains invalid characters for key: ${key}`);
                         return;
                     }
