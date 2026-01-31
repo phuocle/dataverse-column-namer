@@ -796,6 +796,7 @@
             valueDescriptor.set.call(input, value);
         } else {
             // Fallback: directly set the value if the native setter is unavailable
+            console.warn('DataverseColumnNamer: Native value setter not found, using fallback');
             input.value = value;
         }
 

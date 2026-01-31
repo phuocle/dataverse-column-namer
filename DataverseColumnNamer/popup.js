@@ -310,7 +310,7 @@ importFile.addEventListener('change', importConfig);
 function exportConfig() {
     // Warn if exporting in debug mode
     if (IS_DEBUG) {
-        const debugWarning = confirm(
+        const shouldExport = confirm(
             'WARNING: You are exporting configuration while in DEBUG MODE.\n\n' +
             'The exported config will contain debug suffixes (e.g., __lookup, __choice).\n' +
             'If you import this config in production mode (IS_DEBUG=false), ' +
@@ -318,7 +318,7 @@ function exportConfig() {
             'Do you want to continue with the export?'
         );
         
-        if (!debugWarning) {
+        if (!shouldExport) {
             showMessage('Export cancelled');
             return;
         }
@@ -382,8 +382,8 @@ function importConfig(event) {
                 for (const [key, value] of Object.entries(config.Suffixes)) {
                     // Only apply if the key exists in our suffix inputs and value is a safe string
                     if (suffixInputs[key] && typeof value === 'string') {
-                        // Sanitize the value to prevent XSS by only allowing safe characters
-                        const sanitizedValue = value.replace(/[<>"'`]/g, '');
+                        // Only allow alphanumeric, underscores, and hyphens for suffix values
+                        const sanitizedValue = value.replace(/[^a-zA-Z0-9_-]/g, '');
                         suffixInputs[key].value = sanitizedValue;
                     }
                 }
