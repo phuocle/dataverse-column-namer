@@ -1,5 +1,10 @@
-const STORAGE_KEY = 'DataverseColumnNamer';
+const EXTENSION_CONFIG =
+    window.DATAVERSE_COLUMN_NAMER_CONFIG ||
+    { STORAGE_KEY: 'DataverseColumnNamer' };
 
+window.DATAVERSE_COLUMN_NAMER_CONFIG = EXTENSION_CONFIG;
+
+const STORAGE_KEY = EXTENSION_CONFIG.STORAGE_KEY;
 // Debug mode: Set to true for development/testing. When enabled:
 // - All suffixes use the __[type] pattern for easy identification
 // - Suffix inputs are disabled in the UI to prevent confusion
