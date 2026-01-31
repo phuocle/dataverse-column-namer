@@ -105,6 +105,7 @@
         if (IS_DEBUG) {
             currentSuffixes = { ...DEBUG_SUFFIXES };
             currentNamingConvention = 'underscore_lowercase';
+            console.warn('[DataverseColumnNamer] Debug mode is enabled; stored suffix and naming convention settings are being ignored.');
             return;
         }
 
