@@ -485,25 +485,12 @@
         });
     }
 
-    // Performance optimization: Cache getDataType() result
-    let cachedDataType = null;
-    let cacheTimestamp = 0;
-    const CACHE_DURATION = 100; // ms - cache for current update cycle
-
-    function invalidateDataTypeCache() {
-        cachedDataType = null;
-        cacheTimestamp = 0;
-    }
-
+    // Direct DOM query - no caching (cache was causing stale data type detection bugs)
     function getDataType() {
-        // Check cache first
-        const now = Date.now();
-        if (cachedDataType !== null && (now - cacheTimestamp) < CACHE_DURATION) {
-            return cachedDataType;
-        }
-
         let result = '';
         const dataTypeLabel = document.querySelector(SELECTORS.dataTypeButton);
+
+        if (IS_DEBUG) console.log('[DCN] getDataType - reading:', dataTypeLabel?.textContent?.trim());
 
         if (dataTypeLabel) {
             const text = dataTypeLabel.textContent.trim().toLowerCase();
@@ -583,9 +570,6 @@
             }
         }
 
-        // Cache the result
-        cachedDataType = result;
-        cacheTimestamp = Date.now();
         return result;
     }
 
@@ -607,11 +591,38 @@
     }
 
     function getBehaviorType() {
-        const behaviorOption = document.querySelector('#tooltipColumnBehavior-option');
-        if (behaviorOption) {
-            return behaviorOption.textContent.trim().toLowerCase();
+        // Advanced Fix: Scan for ALL elements with this ID because PowerApps might have duplicates
+        const allOptions = document.querySelectorAll('#tooltipColumnBehavior-option');
+
+        if (IS_DEBUG) {
+            console.log(`[DCN] Found ${allOptions.length} elements with ID #tooltipColumnBehavior-option`);
+            allOptions.forEach((el, idx) => {
+                console.log(`  [${idx}] Text: "${el.textContent}", Visible: ${el.offsetParent !== null}`);
+            });
         }
-        return '';
+
+        // Try to find a meaningful value (not "Simple")
+        let bestMatch = '';
+        for (const el of allOptions) {
+            const text = el.textContent.trim().toLowerCase();
+            if (text !== 'simple' && text !== '') {
+                bestMatch = text;
+                // If we find a non-simple value, assume it's the selected one
+                break;
+            }
+        }
+
+        if (bestMatch) return bestMatch;
+
+        // Fallback: If only "Simple" exists or nothing found, check other selectors
+        if (allOptions.length > 0) {
+            return allOptions[0].textContent.trim().toLowerCase();
+        }
+
+        // Fallback selectors
+        const sel2 = document.querySelector('#ColumnForm_Behavior option:checked');
+        const sel3 = document.querySelector('[data-testid="columnBehavior"] span');
+        return (sel2 || sel3)?.textContent.trim().toLowerCase() || '';
     }
 
     function isCalculatedBehavior() {
@@ -838,11 +849,11 @@
 
     function setupSchemaNameOverride() {
         // Performance optimization: Debounce function for updateSchemaName
+        // Use 300ms delay to ensure PowerApps DOM has fully updated
         let updateTimeout;
         const debouncedUpdate = () => {
-            invalidateDataTypeCache(); // Clear cache before update
             clearTimeout(updateTimeout);
-            updateTimeout = setTimeout(updateSchemaName, 100);
+            updateTimeout = setTimeout(updateSchemaName, 300);
         };
 
         const observer = new MutationObserver((mutations) => {
@@ -899,7 +910,6 @@
             if (multipleChoicesCheckbox && !multipleChoicesCheckbox.hasAttribute('data-mf-listening')) {
                 multipleChoicesCheckbox.setAttribute('data-mf-listening', 'true');
                 multipleChoicesCheckbox.addEventListener('change', () => {
-                    invalidateDataTypeCache();
                     setTimeout(updateSchemaName, 50);
                 });
             }
