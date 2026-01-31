@@ -725,19 +725,37 @@
     function applyNamingConvention(str) {
         if (!str) return '';
 
+        let result;
+
         switch (currentNamingConvention) {
             case 'underscore_preserve':
-                return toUnderscorePreserve(str);
+                result = toUnderscorePreserve(str);
+                break;
             case 'pascalCase':
-                return toPascalCase(str);
+                result = toPascalCase(str);
+                break;
             case 'camelCase':
-                return toCamelCase(str);
+                result = toCamelCase(str);
+                break;
             case 'remove_spaces':
-                return toRemoveSpaces(str);
+                result = toRemoveSpaces(str);
+                break;
             case 'underscore_lowercase':
             default:
-                return toUnderscoreLowercase(str).replace(/[^a-z0-9_]/g, '');
+                result = toUnderscoreLowercase(str);
+                break;
         }
+
+        // Sanitize invalid characters for all naming conventions to ensure valid schema names
+        if (currentNamingConvention === 'underscore_lowercase') {
+            // Preserve existing behavior: only lowercase letters, digits, and underscores
+            result = result.replace(/[^a-z0-9_]/g, '');
+        } else {
+            // For other conventions, allow letters (any case), digits, and underscores
+            result = result.replace(/[^a-zA-Z0-9_]/g, '');
+        }
+
+        return result;
     }
 
     function toSnakeCase(str) {
