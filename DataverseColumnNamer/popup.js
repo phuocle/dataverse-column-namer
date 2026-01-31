@@ -455,7 +455,9 @@ function importConfig(event) {
 
             showMessage('Configuration imported! Click Save to apply.');
         } catch (error) {
-            showMessage('Error: Invalid config file');
+            console.error('Error importing configuration file:', error);
+            const details = (error && error.message) ? ` Details: ${error.message}` : '';
+            showMessage('Error: Invalid config file.' + details);
         }
     };
     reader.readAsText(file);
