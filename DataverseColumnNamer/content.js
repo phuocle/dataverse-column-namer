@@ -431,29 +431,24 @@
     }
 
     async function setupEnvironmentWatcher() {
-        const maxAttempts = 60;
-        let envTitleEl = null;
+        let envTitleEl = document.querySelector('div[data-test-id="EnvironmentTitle"]');
 
-        for (let i = 0; i < maxAttempts; i++) {
-            envTitleEl = document.querySelector('div[data-test-id="EnvironmentTitle"]');
-            if (envTitleEl) break;
-            await new Promise(resolve => setTimeout(resolve, 500));
-        }
-
-        if (!envTitleEl) {
-            const bodyObserver = new MutationObserver((mutations, obs) => {
-                const el = document.querySelector('div[data-test-id="EnvironmentTitle"]');
-                if (el) {
-                    obs.disconnect();
-                    attachEnvironmentTitleObserver(el);
-                }
-            });
-
-            bodyObserver.observe(document.body, { childList: true, subtree: true });
+        // If the environment title already exists, attach the observer immediately
+        if (envTitleEl) {
+            attachEnvironmentTitleObserver(envTitleEl);
             return;
         }
 
-        attachEnvironmentTitleObserver(envTitleEl);
+        // Otherwise, observe the body until the environment title element appears
+        const bodyObserver = new MutationObserver((mutations, obs) => {
+            const el = document.querySelector('div[data-test-id="EnvironmentTitle"]');
+            if (el) {
+                obs.disconnect();
+                attachEnvironmentTitleObserver(el);
+            }
+        });
+
+       bodyObserver.observe(document.body, { childList: true, subtree: true });
     }
 
     function attachEnvironmentTitleObserver(element) {
