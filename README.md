@@ -2,7 +2,7 @@
 
 A Chrome/Edge browser extension that automatically generates schema names for Dataverse columns in Microsoft PowerApps, following configurable naming conventions.
 
-![Extension Icon](DataverseColumnNamer/icons/icon128.png)
+![Extension Icon](./DataverseColumnNamer/icons/icon128.png)
 
 ## 🎯 Purpose
 
@@ -90,8 +90,8 @@ deploy/                     # Build artifacts and deployment packages
 
 The extension has a built-in debug mode for development:
 
-1. Open `DataverseColumnNamer/content.js` and `DataverseColumnNamer/popup.js`
-2. Set `IS_DEBUG = true` (default for development)
+1. From the repository root, open `DataverseColumnNamer/content.js` and `DataverseColumnNamer/popup.js`
+2. For local development, temporarily set `IS_DEBUG = true` (the default in the repository is `IS_DEBUG = false` for production builds)
 3. In debug mode, all suffixes use the `__[type]` pattern for easy identification
 4. Example: `my_field__lookup`, `my_field__choice`
 
