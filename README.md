@@ -2,7 +2,7 @@
 
 A Chrome/Edge browser extension that automatically generates schema names for Dataverse columns in Microsoft PowerApps, following configurable naming conventions.
 
-![Extension Icon](DataverseColumnNamer/src/icons/icon128.png)
+![Extension Icon](DataverseColumnNamer/icons/icon128.png)
 
 ## 🎯 Purpose
 
