@@ -584,9 +584,18 @@
 
     let currentNamingConvention = 'underscore_lowercase';
 
+    // Normalize input: replace special characters with spaces, then trim
+    function normalizeInput(input) {
+        if (!input) return '';
+        // Replace any non-alphanumeric characters (except spaces) with space
+        // This treats &&&, @@@, --- etc. as word separators
+        return input.trim().replace(/[^a-zA-Z0-9\s]+/g, ' ').replace(/\s+/g, ' ').trim();
+    }
+
     function toPascalCase(input) {
         if (!input) return '';
-        const words = input.trim().split(/[\s\-_]+/);
+        const normalized = normalizeInput(input);
+        const words = normalized.split(/\s+/);
         return words.map(w => {
             if (!w) return '';
             return w.charAt(0).toUpperCase() + w.slice(1).toLowerCase();
@@ -601,17 +610,21 @@
 
     function toUnderscoreLowercase(input) {
         if (!input) return '';
-        return input.trim().toLowerCase().replace(/\s+/g, '_');
+        const normalized = normalizeInput(input);
+        return normalized.toLowerCase().replace(/\s+/g, '_');
     }
 
     function toUnderscorePreserve(input) {
         if (!input) return '';
-        return input.trim().replace(/\s+/g, '_');
+        const normalized = normalizeInput(input);
+        return normalized.replace(/\s+/g, '_');
     }
 
     function toRemoveSpaces(input) {
         if (!input) return '';
-        return input.trim().replace(/\s+/g, '').toLowerCase();
+        const normalized = normalizeInput(input);
+        // Remove spaces, preserve case
+        return normalized.replace(/\s+/g, '');
     }
 
     function applyNamingConvention(str) {
@@ -628,17 +641,15 @@
                 return toRemoveSpaces(str);
             case 'underscore_lowercase':
             default:
-                return toUnderscoreLowercase(str).replace(/[^a-z0-9_]/g, '');
+                return toUnderscoreLowercase(str);
         }
     }
 
-    function toSnakeCase(str) {
+    function formatSchemaName(str) {
         if (!str) return '';
-
         let result = applyNamingConvention(str);
-
+        // Final cleanup: remove any remaining non-alphanumeric (except underscore)
         result = result.replace(/[^a-zA-Z0-9_]/g, '');
-
         return result;
     }
 
@@ -656,7 +667,7 @@
         if (!isExtensionActive) return;
 
         const displayName = event.target.value;
-        let schemaName = toSnakeCase(displayName);
+        let schemaName = formatSchemaName(displayName);
         schemaName = addDataTypeSuffix(schemaName);
 
         const schemaInput = document.querySelector(SELECTORS.schemaNameInput);
@@ -678,7 +689,7 @@
         const displayName = displayInput.value;
         if (!displayName) return;
 
-        let schemaName = toSnakeCase(displayName);
+        let schemaName = formatSchemaName(displayName);
         schemaName = addDataTypeSuffix(schemaName);
 
         setReactInputValue(schemaInput, schemaName);
