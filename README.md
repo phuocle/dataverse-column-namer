@@ -93,7 +93,7 @@ DataverseColumnNamer/
 
 The extension has a built-in debug mode for development:
 
-1. Open `src/content.js` and `src/popup.js`
+1. Open `DataverseColumnNamer/content.js` and `DataverseColumnNamer/popup.js`
 2. Set `IS_DEBUG = true` (default for development)
 3. In debug mode, all suffixes use the `__[type]` pattern for easy identification
 4. Example: `my_field__lookup`, `my_field__choice`
