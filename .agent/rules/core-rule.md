@@ -17,6 +17,7 @@ DataverseColumnNamer/
 ├── popup.html
 ├── popup.css
 ├── styles.css
+├── utils.js
 └── icons/
     ├── icon16.png
     ├── icon48.png
@@ -53,9 +54,8 @@ root/                               ← Repository root
     ├── popup.html                 ← Popup UI
     ├── popup.css                  ← Popup styles
     ├── styles.css                 ← Content styles
-    ├── icons/                     ← Extension icons
-    ├── docs/                      ← Documentation (gitignored)
-    └── deploy/                    ← Old location (removed)
+    ├── utils.js                   ← Utility functions
+    └── icons/                     ← Extension icons
 ```
 
 ## Important Notes

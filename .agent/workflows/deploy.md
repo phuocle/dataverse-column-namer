@@ -17,7 +17,7 @@ This workflow creates a production-ready ZIP package for submitting to Chrome We
 ## Output Structure
 
 ```
-src3/                              ← Repository root
+root/                              ← Repository root
 └── deploy/                        ← Deployment folder (committed to git)
     └── DataverseColumnNamer.zip   ← Ready for Chrome/Edge Store upload
 ```
@@ -50,7 +50,7 @@ New-Item -ItemType Directory -Force -Path "../deploy"
 
 ### 4. Create the store-ready extension ZIP
 ```powershell
-Compress-Archive -Path "./manifest.json", "./content.js", "./styles.css", "./popup.css", "./popup.html", "./popup.js", "./icons" -DestinationPath "../deploy/DataverseColumnNamer.zip" -Force
+Compress-Archive -Path "./manifest.json", "./content.js", "./utils.js", "./styles.css", "./popup.css", "./popup.html", "./popup.js", "./icons" -DestinationPath "../deploy/DataverseColumnNamer.zip" -Force
 ```
 
 ### 5. Verify the package
