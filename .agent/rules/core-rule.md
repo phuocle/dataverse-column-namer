@@ -39,8 +39,8 @@ At the repository root:
 root/                               ← Repository root
 ├── .gitignore                      ← Git ignore
 ├── README.md                       ← Repository documentation
-├── deploy/                         ← Build artifacts (included in git)
-│   └── DataverseColumnNamer.zip   ← Store-ready package
+├── deploy/                         ← Build artifacts (gitignored)
+│   └── DataverseColumnNamer.zip   ← Store-ready package (not tracked)
 ├── .agent/
 │   ├── rules/
 │   │   └── core-rule.md           ← This file
