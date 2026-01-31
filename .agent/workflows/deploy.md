@@ -12,7 +12,7 @@ This workflow creates a production-ready ZIP package for submitting to Chrome We
 
 **Output location:** `deploy/` folder at repository root (parent directory)
 
-**IMPORTANT:** This workflow automatically handles `IS_DEBUG` flag - sets to `false` for production build, then restores to `true` for development.
+**IMPORTANT:** This workflow creates a temporary copy of files with `IS_DEBUG` set to `false` for production build. Source files are never modified, ensuring repository integrity even if the workflow is interrupted.
 
 ## Output Structure
 
@@ -25,53 +25,55 @@ repo-root/                         ← Repository root
 
 ## Steps
 
-### 1. Set IS_DEBUG = false for production build
-In both `content.js` and `popup.js`, change:
-```javascript
-const IS_DEBUG = true;
-```
-to:
-```javascript
-const IS_DEBUG = false;
-```
-
-Files to update:
-- `./content.js` (line 5)
-- `./popup.js` (line 4)
-
-### 2. Clean up old packages
+### 1. Clean up old packages
 ```powershell
 Remove-Item -Path "../deploy/DataverseColumnNamer.zip" -Force -ErrorAction SilentlyContinue
 ```
 
-### 3. Create deploy folder at root if not exists
+### 2. Create deploy folder at root if not exists
 ```powershell
 New-Item -ItemType Directory -Force -Path "../deploy"
 ```
 
-### 4. Create the store-ready extension ZIP
+### 3. Create temporary build directory
 ```powershell
-Compress-Archive -Path "./manifest.json", "./content.js", "./styles.css", "./popup.css", "./popup.html", "./popup.js", "./icons" -DestinationPath "../deploy/DataverseColumnNamer.zip" -Force
+$tempDir = "../deploy/temp_build"
+New-Item -ItemType Directory -Force -Path $tempDir
 ```
 
-### 5. Verify the package
+### 4. Copy files to temporary directory
+```powershell
+Copy-Item -Path "./manifest.json", "./styles.css", "./popup.css", "./popup.html", "./icons" -Destination $tempDir -Recurse -Force
+```
+
+### 5. Copy and modify content.js with IS_DEBUG = false
+```powershell
+$contentJs = Get-Content "./content.js" -Raw
+$contentJs = $contentJs -replace 'const IS_DEBUG = true;', 'const IS_DEBUG = false;'
+Set-Content -Path "$tempDir/content.js" -Value $contentJs
+```
+
+### 6. Copy and modify popup.js with IS_DEBUG = false
+```powershell
+$popupJs = Get-Content "./popup.js" -Raw
+$popupJs = $popupJs -replace 'const IS_DEBUG = true;', 'const IS_DEBUG = false;'
+Set-Content -Path "$tempDir/popup.js" -Value $popupJs
+```
+
+### 7. Create the store-ready extension ZIP from temporary directory
+```powershell
+Compress-Archive -Path "$tempDir/*" -DestinationPath "../deploy/DataverseColumnNamer.zip" -Force
+```
+
+### 8. Clean up temporary directory
+```powershell
+Remove-Item -Path $tempDir -Recurse -Force
+```
+
+### 9. Verify the package
 ```powershell
 Get-ChildItem "../deploy/DataverseColumnNamer.zip" | Select-Object Name, @{N='Size(KB)';E={[math]::Round($_.Length/1024,2)}}, LastWriteTime
 ```
-
-### 6. Restore IS_DEBUG = true for development
-In both `content.js` and `popup.js`, change back:
-```javascript
-const IS_DEBUG = false;
-```
-to:
-```javascript
-const IS_DEBUG = true;
-```
-
-Files to update:
-- `./content.js` (line 5)
-- `./popup.js` (line 4)
 
 ## Distribution
 
@@ -93,8 +95,8 @@ The `deploy/` folder is **excluded from git** (gitignored). Use GitHub Releases 
 ## Package Contents Checklist
 
 - [x] `manifest.json` - v1.0.0, all fields complete
-- [x] `content.js` - IS_DEBUG = false
-- [x] `popup.js` - IS_DEBUG = false  
+- [x] `content.js` - IS_DEBUG = false (via temporary build)
+- [x] `popup.js` - IS_DEBUG = false (via temporary build)
 - [x] `popup.html` - Popup interface
 - [x] `popup.css` - Popup styles
 - [x] `styles.css` - Content injection styles
@@ -110,6 +112,7 @@ The `deploy/` folder is **excluded from git** (gitignored). Use GitHub Releases 
 - Validate at Chrome Web Store after upload
 - Check all icon paths are correct
 
-**IS_DEBUG still true:**
-- Re-run steps 1 and 4
-- Verify changes before creating ZIP
+**Build fails:**
+- Ensure temporary build directory is created successfully
+- Check PowerShell execution policy if scripts fail
+- Verify source files exist before running workflow
