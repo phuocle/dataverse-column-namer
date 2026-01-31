@@ -1,0 +1,48 @@
+/* Dataverse Column Namer Extension Styles */
+
+/* Halo Effect for Environment Button */
+.dcn-env-active {
+    border: 3px solid #00a651 !important;
+    border-radius: 4px !important;
+    transition: all 0.3s ease;
+}
+
+/* Panel Status Badge */
+.dcn-panel-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    margin: 4px 0 4px 16px;
+    padding: 2px 8px;
+    background-color: #00a651;
+    color: white;
+    font-size: 9px;
+    font-weight: 600;
+    font-family: "Segoe UI", -apple-system, sans-serif;
+    box-sizing: border-box;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    line-height: normal;
+    border-radius: 3px;
+}
+
+.dcn-panel-badge::before {
+    margin-right: 6px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.dcn-panel-badge::after {
+    margin-left: 6px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+/* Debug Mode Badge */
+.dcn-panel-badge.dcn-debug-mode {
+    background-color: #d13438 !important;
+    border: 2px solid #a82a2e !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.5px !important;
+}

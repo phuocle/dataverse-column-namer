@@ -1,0 +1,455 @@
+/* Fluent UI Inspired Styles - No CDN Required */
+:root {
+    --colorNeutralForeground1: #242424;
+    --colorNeutralForeground2: #616161;
+    --colorNeutralForeground3: #707070;
+    --colorNeutralBackground1: #ffffff;
+    --colorNeutralBackground2: #fafafa;
+    --colorNeutralBackground3: #f5f5f5;
+    --colorNeutralStroke1: #d1d1d1;
+    --colorNeutralStroke2: #e0e0e0;
+    --colorBrandBackground: #0078d4;
+    --colorBrandBackgroundHover: #106ebe;
+    --colorBrandBackgroundPressed: #005a9e;
+    --colorStatusSuccessBackground: #dff6dd;
+    --colorStatusSuccessForeground: #107c10;
+    --colorStatusWarningBackground: #fff4ce;
+    --colorStatusWarningForeground: #d83b01;
+    --fontFamilyBase: 'Segoe UI', 'Segoe UI Web', -apple-system, BlinkMacSystemFont, sans-serif;
+    --fontSizeBase200: 12px;
+    --fontSizeBase300: 14px;
+    --fontSizeBase400: 16px;
+    --fontWeightSemibold: 600;
+    --borderRadiusMedium: 4px;
+    --borderRadiusLarge: 8px;
+    --spacingHorizontalS: 8px;
+    --spacingHorizontalM: 12px;
+    --spacingVerticalS: 8px;
+    --spacingVerticalM: 12px;
+    --shadow4: 0 2px 4px rgba(0, 0, 0, 0.14);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--fontFamilyBase);
+    font-size: var(--fontSizeBase300);
+    width: 340px;
+    padding: 0;
+    background: var(--colorNeutralBackground2);
+    color: var(--colorNeutralForeground1);
+}
+
+.container {
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Header */
+.header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--colorNeutralStroke2);
+}
+
+.header img {
+    width: 32px;
+    height: 32px;
+}
+
+.header .title {
+    font-size: var(--fontSizeBase400);
+    font-weight: var(--fontWeightSemibold);
+    color: var(--colorNeutralForeground1);
+}
+
+/* Card */
+.card {
+    background: var(--colorNeutralBackground1);
+    border: 1px solid var(--colorNeutralStroke2);
+    border-radius: var(--borderRadiusMedium);
+    box-shadow: var(--shadow4);
+}
+
+.card.current-env {
+    padding: var(--spacingHorizontalM);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.label-semibold {
+    font-weight: var(--fontWeightSemibold);
+    font-size: var(--fontSizeBase200);
+    color: var(--colorNeutralForeground2);
+}
+
+/* Status Badge */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: var(--borderRadiusMedium);
+    font-size: 13px;
+    width: fit-content;
+    font-weight: 500;
+}
+
+.status-badge.active {
+    background: var(--colorStatusSuccessBackground);
+    color: var(--colorStatusSuccessForeground);
+}
+
+.status-badge.inactive {
+    background: var(--colorStatusWarningBackground);
+    color: var(--colorStatusWarningForeground);
+}
+
+.status-badge.debug-mode {
+    background: #d13438;
+    color: white;
+    font-weight: 600;
+    border: 2px solid #a82a2e;
+    width: 100%;
+    justify-content: center;
+}
+
+.status-badge.debug-mode .status-dot {
+    display: none;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: currentColor;
+}
+
+/* Form Groups */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.fluent-label {
+    font-size: var(--fontSizeBase200);
+    font-weight: 500;
+    color: var(--colorNeutralForeground2);
+}
+
+.fluent-label.small {
+    font-size: 11px;
+}
+
+/* Input Group */
+.input-group {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.env-input {
+    flex: 1;
+}
+
+/* Fluent Input */
+.fluent-input {
+    width: 100%;
+    padding: 8px 12px;
+    font-size: var(--fontSizeBase300);
+    font-family: var(--fontFamilyBase);
+    border: 1px solid var(--colorNeutralStroke1);
+    border-radius: var(--borderRadiusMedium);
+    background: var(--colorNeutralBackground1);
+    color: var(--colorNeutralForeground1);
+    outline: none;
+    transition: border-color 0.1s ease, box-shadow 0.1s ease;
+}
+
+.fluent-input:hover {
+    border-color: #c7c7c7;
+}
+
+.fluent-input:focus {
+    border-color: var(--colorBrandBackground);
+    box-shadow: 0 0 0 1px var(--colorBrandBackground);
+}
+
+.fluent-input[readonly] {
+    background: var(--colorNeutralBackground3);
+    color: var(--colorNeutralForeground2);
+    cursor: not-allowed;
+}
+
+.fluent-input::placeholder {
+    color: var(--colorNeutralForeground3);
+}
+
+/* Fluent Select */
+.fluent-select {
+    width: 100%;
+    padding: 8px 12px;
+    font-size: var(--fontSizeBase300);
+    font-family: var(--fontFamilyBase);
+    border: 1px solid var(--colorNeutralStroke1);
+    border-radius: var(--borderRadiusMedium);
+    background: var(--colorNeutralBackground1);
+    color: var(--colorNeutralForeground1);
+    outline: none;
+    cursor: pointer;
+    transition: border-color 0.1s ease, box-shadow 0.1s ease;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23616161' d='M2.146 4.146a.5.5 0 0 1 .708 0L6 7.293l3.146-3.147a.5.5 0 0 1 .708.708l-3.5 3.5a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 32px;
+}
+
+.fluent-select:hover {
+    border-color: #c7c7c7;
+}
+
+.fluent-select:focus {
+    border-color: var(--colorBrandBackground);
+    box-shadow: 0 0 0 1px var(--colorBrandBackground);
+}
+
+.full-width {
+    width: 100%;
+}
+
+/* Fluent Accordion */
+.fluent-accordion {
+    border: 1px solid var(--colorNeutralStroke2);
+    border-radius: var(--borderRadiusMedium);
+    background: var(--colorNeutralBackground1);
+    overflow: hidden;
+}
+
+.accordion-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 12px;
+    cursor: pointer;
+    background: var(--colorNeutralBackground3);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--colorNeutralForeground1);
+    list-style: none;
+    user-select: none;
+    transition: background-color 0.1s ease;
+}
+
+.accordion-header:hover {
+    background: #ebebeb;
+}
+
+.accordion-header::-webkit-details-marker {
+    display: none;
+}
+
+.chevron-icon {
+    transition: transform 0.2s ease;
+    flex-shrink: 0;
+}
+
+.fluent-accordion[open] .chevron-icon {
+    transform: rotate(90deg);
+}
+
+.accordion-content {
+    padding: 12px;
+    border-top: 1px solid var(--colorNeutralStroke2);
+}
+
+/* Suffix Groups */
+.suffix-group {
+    border: 1px solid var(--colorNeutralStroke2);
+    border-radius: var(--borderRadiusMedium);
+    padding: 8px 10px 10px;
+    margin: 0 0 10px 0;
+}
+
+.suffix-group:last-child {
+    margin-bottom: 0;
+}
+
+.suffix-group legend {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--colorBrandBackground);
+    padding: 0 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.suffix-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.suffix-grid.two-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px 10px;
+}
+
+.suffix-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.suffix-item .fluent-input {
+    padding: 5px 8px;
+    font-size: 11px;
+}
+
+.suffix-grid.two-columns .suffix-item .fluent-label {
+    font-size: 10px;
+}
+
+/* Fluent Buttons */
+.fluent-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 8px 16px;
+    font-size: var(--fontSizeBase300);
+    font-family: var(--fontFamilyBase);
+    font-weight: 500;
+    border-radius: var(--borderRadiusMedium);
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all 0.1s ease;
+    outline: none;
+    min-height: 32px;
+}
+
+.btn-icon {
+    flex-shrink: 0;
+}
+
+.fluent-button:focus-visible {
+    box-shadow: 0 0 0 2px var(--colorNeutralBackground1), 0 0 0 4px #000;
+}
+
+.fluent-button.accent {
+    background: var(--colorBrandBackground);
+    color: #ffffff;
+    border-color: var(--colorBrandBackground);
+}
+
+.fluent-button.accent:hover {
+    background: var(--colorBrandBackgroundHover);
+    border-color: var(--colorBrandBackgroundHover);
+}
+
+.fluent-button.accent:active {
+    background: var(--colorBrandBackgroundPressed);
+    border-color: var(--colorBrandBackgroundPressed);
+}
+
+.fluent-button.outline {
+    background: var(--colorNeutralBackground1);
+    color: var(--colorNeutralForeground1);
+    border-color: var(--colorNeutralStroke1);
+}
+
+.fluent-button.outline:hover {
+    background: var(--colorNeutralBackground3);
+}
+
+.fluent-button.outline:active {
+    background: #e8e8e8;
+}
+
+.fluent-button.subtle {
+    background: transparent;
+    color: var(--colorNeutralForeground1);
+    border: 1px solid var(--colorNeutralStroke1);
+    padding: 8px 10px;
+}
+
+.fluent-button.subtle:hover {
+    background: var(--colorNeutralBackground3);
+}
+
+.fluent-button.subtle:active {
+    background: #e0e0e0;
+}
+
+.fluent-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.button-row {
+    display: flex;
+    gap: 8px;
+}
+
+.button-row .fluent-button {
+    flex: 1;
+}
+
+/* Message */
+.message {
+    text-align: center;
+    font-size: var(--fontSizeBase200);
+    color: var(--colorStatusSuccessForeground);
+    min-height: 0;
+}
+
+/* Footer */
+.footer {
+    margin-top: 4px;
+    padding-top: 8px;
+    border-top: 1px solid var(--colorNeutralStroke2);
+    text-align: center;
+}
+
+.github-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    text-decoration: none;
+    color: var(--colorNeutralForeground3);
+    font-size: 10px;
+    padding: 4px 8px;
+    border-radius: var(--borderRadiusMedium);
+    transition: all 0.15s ease;
+}
+
+.github-link:hover {
+    background: var(--colorNeutralBackground3);
+    color: var(--colorNeutralForeground1);
+}
+
+.github-icon {
+    color: #2ea44f;
+    width: 14px;
+    height: 14px;
+}
+
+.github-link:hover .github-icon {
+    transform: scale(1.1);
+}
+
+.github-link strong {
+    color: #2ea44f;
+    font-weight: 600;
+}
