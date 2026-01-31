@@ -435,29 +435,30 @@
     }
 
     async function setupEnvironmentWatcher() {
-        const maxAttempts = 60;
-        let envTitleEl = null;
+        // Performance optimization: Use MutationObserver instead of polling
+        const envTitleEl = document.querySelector('div[data-test-id="EnvironmentTitle"]');
 
-        for (let i = 0; i < maxAttempts; i++) {
-            envTitleEl = document.querySelector('div[data-test-id="EnvironmentTitle"]');
-            if (envTitleEl) break;
-            await new Promise(resolve => setTimeout(resolve, 500));
-        }
-
-        if (!envTitleEl) {
-            const bodyObserver = new MutationObserver((mutations, obs) => {
-                const el = document.querySelector('div[data-test-id="EnvironmentTitle"]');
-                if (el) {
-                    obs.disconnect();
-                    attachEnvironmentTitleObserver(el);
-                }
-            });
-
-            bodyObserver.observe(document.body, { childList: true, subtree: true });
+        if (envTitleEl) {
+            // Element already exists
+            attachEnvironmentTitleObserver(envTitleEl);
             return;
         }
 
-        attachEnvironmentTitleObserver(envTitleEl);
+        // Element not found, wait for it with MutationObserver
+        const observer = new MutationObserver((mutations, obs) => {
+            const el = document.querySelector('div[data-test-id="EnvironmentTitle"]');
+            if (el) {
+                obs.disconnect();
+                attachEnvironmentTitleObserver(el);
+            }
+        });
+
+        observer.observe(document.body, { childList: true, subtree: true });
+
+        // Fallback timeout to disconnect observer if element never appears
+        setTimeout(() => {
+            observer.disconnect();
+        }, 30000); // 30 second timeout
     }
 
     function attachEnvironmentTitleObserver(element) {
@@ -484,7 +485,24 @@
         });
     }
 
+    // Performance optimization: Cache getDataType() result
+    let cachedDataType = null;
+    let cacheTimestamp = 0;
+    const CACHE_DURATION = 100; // ms - cache for current update cycle
+
+    function invalidateDataTypeCache() {
+        cachedDataType = null;
+        cacheTimestamp = 0;
+    }
+
     function getDataType() {
+        // Check cache first
+        const now = Date.now();
+        if (cachedDataType !== null && (now - cacheTimestamp) < CACHE_DURATION) {
+            return cachedDataType;
+        }
+
+        let result = '';
         const dataTypeLabel = document.querySelector(SELECTORS.dataTypeButton);
 
         if (dataTypeLabel) {
@@ -497,72 +515,78 @@
                     const formatText = formatValue.textContent.trim().toLowerCase();
                     // Return specific format if it's not just "text"
                     if (formatText === 'text area') {
-                        return 'text_area';
+                        result = 'text_area';
+                    } else if (formatText === 'email') {
+                        result = 'email';
+                    } else if (formatText === 'phone' || formatText === 'phone number') {
+                        result = 'phone';
+                    } else if (formatText === 'url') {
+                        result = 'url';
+                    } else if (formatText === 'ticker symbol') {
+                        result = 'ticker symbol';
+                    } else if (formatText === 'rich text') {
+                        result = 'text_richtext';
+                    } else {
+                        result = text;
                     }
-                    if (formatText === 'email') {
-                        return 'email';
-                    }
-                    if (formatText === 'phone' || formatText === 'phone number') {
-                        return 'phone';
-                    }
-                    if (formatText === 'url') {
-                        return 'url';
-                    }
-                    if (formatText === 'ticker symbol') {
-                        return 'ticker symbol';
-                    }
-                    if (formatText === 'rich text') {
-                        return 'text_richtext';
-                    }
+                } else {
+                    result = text;
                 }
             }
-
-            // If it's "Multiple lines of text", check the format dropdown
-            if (text === 'multiple lines of text') {
+            // If it's "Multiple lines of text", check the format dropdown  
+            else if (text === 'multiple lines of text') {
                 const formatValue = document.querySelector(SELECTORS.formatValue);
                 if (formatValue) {
                     const formatText = formatValue.textContent.trim().toLowerCase();
                     if (formatText === 'rich text') {
-                        return 'multiline_richtext';
+                        result = 'multiline_richtext';
+                    } else {
+                        result = 'multiline';
                     }
+                } else {
+                    result = 'multiline';
                 }
-                return 'multiline';
             }
-
             // If it's "Whole number", check the format dropdown for specific formats
-            if (text === 'whole number') {
+            else if (text === 'whole number') {
                 const formatValue = document.querySelector(SELECTORS.formatValue);
                 if (formatValue) {
                     const formatText = formatValue.textContent.trim().toLowerCase();
                     if (formatText === 'duration') {
-                        return 'duration';
+                        result = 'duration';
+                    } else if (formatText === 'language code' || formatText === 'language') {
+                        result = 'language';
+                    } else if (formatText === 'time zone' || formatText === 'timezone') {
+                        result = 'timezone';
+                    } else {
+                        result = 'whole number';
                     }
-                    if (formatText === 'language code' || formatText === 'language') {
-                        return 'language';
-                    }
-                    if (formatText === 'time zone' || formatText === 'timezone') {
-                        return 'timezone';
-                    }
+                } else {
+                    result = 'whole number';
                 }
-                return 'whole number';
             }
-
             // If it's "Date and time", check the format dropdown
-            if (text === 'date and time') {
+            else if (text === 'date and time') {
                 const formatValue = document.querySelector(SELECTORS.formatValue);
                 if (formatValue) {
                     const formatText = formatValue.textContent.trim().toLowerCase();
                     if (formatText === 'date only') {
-                        return 'date only';
+                        result = 'date only';
+                    } else {
+                        result = 'date and time';
                     }
+                } else {
+                    result = 'date and time';
                 }
-                return 'date and time';
+            } else {
+                result = text;
             }
-
-            return text;
         }
 
-        return '';
+        // Cache the result
+        cachedDataType = result;
+        cacheTimestamp = Date.now();
+        return result;
     }
 
     function isLookupType() {
@@ -804,6 +828,14 @@
     }
 
     function setupSchemaNameOverride() {
+        // Performance optimization: Debounce function for updateSchemaName
+        let updateTimeout;
+        const debouncedUpdate = () => {
+            invalidateDataTypeCache(); // Clear cache before update
+            clearTimeout(updateTimeout);
+            updateTimeout = setTimeout(updateSchemaName, 100);
+        };
+
         const observer = new MutationObserver((mutations) => {
             // Only proceed if we're on the "New column" panel
             if (!isNewColumnPanel()) return;
@@ -824,48 +856,43 @@
                 });
             }
 
-            if (dataTypeButton && !dataTypeButton.hasAttribute('data-mf-listening')) {
-                dataTypeButton.setAttribute('data-mf-listening', 'true');
-                const labelObserver = new MutationObserver(() => setTimeout(updateSchemaName, 100));
-                labelObserver.observe(dataTypeButton, { childList: true, subtree: true, characterData: true });
-                dataTypeButton.addEventListener('click', () => setTimeout(updateSchemaName, 500));
+            // Performance optimization: Consolidate type/behavior/format observers into a single area observer
+            const columnPropertiesArea = document.querySelector('#tabDataType');
+            if (columnPropertiesArea && !columnPropertiesArea.hasAttribute('data-mf-listening')) {
+                columnPropertiesArea.setAttribute('data-mf-listening', 'true');
+
+                // Single consolidated observer for all type/behavior/format changes
+                const propertiesObserver = new MutationObserver(debouncedUpdate);
+                propertiesObserver.observe(columnPropertiesArea, {
+                    childList: true,
+                    subtree: true,
+                    characterData: true
+                });
             }
 
-            if (behaviorButton && !behaviorButton.hasAttribute('data-mf-listening')) {
-                behaviorButton.setAttribute('data-mf-listening', 'true');
-                const behaviorObserver = new MutationObserver(() => setTimeout(updateSchemaName, 100));
-                behaviorObserver.observe(behaviorButton, { childList: true, subtree: true, characterData: true });
-                behaviorButton.addEventListener('click', () => setTimeout(updateSchemaName, 500));
+            // Fallback: Individual button click listeners for immediate response
+            if (dataTypeButton && !dataTypeButton.hasAttribute('data-click-listening')) {
+                dataTypeButton.setAttribute('data-click-listening', 'true');
+                dataTypeButton.addEventListener('click', () => setTimeout(debouncedUpdate, 500));
             }
 
-            // Listen to format dropdown (Email, Phone, URL, Ticker Symbol, Text Area, Rich Text, Duration, Language, Timezone)
-            if (formatDropdown && !formatDropdown.hasAttribute('data-mf-listening')) {
-                formatDropdown.setAttribute('data-mf-listening', 'true');
-                const formatObserver = new MutationObserver(() => setTimeout(updateSchemaName, 100));
-                formatObserver.observe(formatDropdown, { childList: true, subtree: true, characterData: true });
-                formatDropdown.addEventListener('click', () => setTimeout(updateSchemaName, 500));
+            if (behaviorButton && !behaviorButton.hasAttribute('data-click-listening')) {
+                behaviorButton.setAttribute('data-click-listening', 'true');
+                behaviorButton.addEventListener('click', () => setTimeout(debouncedUpdate, 500));
             }
 
-            // Also listen to the format value element directly for changes
-            const formatValueEl = document.querySelector(SELECTORS.formatValue);
-            if (formatValueEl && !formatValueEl.hasAttribute('data-mf-listening')) {
-                formatValueEl.setAttribute('data-mf-listening', 'true');
-                const formatValueObserver = new MutationObserver(() => setTimeout(updateSchemaName, 100));
-                formatValueObserver.observe(formatValueEl, { childList: true, subtree: true, characterData: true });
-            }
-
-            // Watch the parent container of format value for any DOM changes
-            const formatContainer = document.querySelector('div[data-testid="columnFormat"]');
-            if (formatContainer && !formatContainer.hasAttribute('data-mf-listening')) {
-                formatContainer.setAttribute('data-mf-listening', 'true');
-                const formatContainerObserver = new MutationObserver(() => setTimeout(updateSchemaName, 100));
-                formatContainerObserver.observe(formatContainer, { childList: true, subtree: true, characterData: true });
+            if (formatDropdown && !formatDropdown.hasAttribute('data-click-listening')) {
+                formatDropdown.setAttribute('data-click-listening', 'true');
+                formatDropdown.addEventListener('click', () => setTimeout(debouncedUpdate, 500));
             }
 
             const multipleChoicesCheckbox = document.querySelector('input[data-testid="multipleChoices"]');
             if (multipleChoicesCheckbox && !multipleChoicesCheckbox.hasAttribute('data-mf-listening')) {
                 multipleChoicesCheckbox.setAttribute('data-mf-listening', 'true');
-                multipleChoicesCheckbox.addEventListener('change', () => setTimeout(updateSchemaName, 50));
+                multipleChoicesCheckbox.addEventListener('change', () => {
+                    invalidateDataTypeCache();
+                    setTimeout(updateSchemaName, 50);
+                });
             }
 
             if (isExtensionActive) {
