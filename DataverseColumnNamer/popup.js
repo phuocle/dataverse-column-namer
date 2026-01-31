@@ -88,7 +88,6 @@ const suffixInputs = {
 
 // Suffix constants are now defined in config.js (shared with content.js)
 
-
 const DEFAULT_SUFFIXES = IS_DEBUG ? DEBUG_SUFFIXES : PROD_SUFFIXES;
 
 function normalizeString(str) {
