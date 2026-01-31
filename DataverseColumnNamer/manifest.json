@@ -6,7 +6,6 @@
   "author": "PhuocLe.NET",
   "permissions": [
     "activeTab",
-    "scripting",
     "storage"
   ],
   "action": {
