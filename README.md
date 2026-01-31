@@ -30,7 +30,7 @@ When creating columns in Dataverse (PowerApps), you need to provide both a **Dis
 
 ### From ZIP (Developer Mode)
 
-1. Download the latest `DataverseColumnNamer-Share.zip` from [Releases](https://github.com/phuocle/dataverse-column-namer/releases)
+1. Download the latest `DataverseColumnNamer.zip` from [Releases](https://github.com/phuocle/dataverse-column-namer/releases)
 2. Extract the ZIP file
 3. Follow instructions in `HUONG-DAN-CAI-DAT.md` (included in the package)
 
