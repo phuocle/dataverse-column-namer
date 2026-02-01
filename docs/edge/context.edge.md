@@ -8,7 +8,7 @@ This file documents the assets generated for the Microsoft Edge Add-ons store an
 - **File:** `store_logo.png`
 - **Size:** 300x300 (Source), required 1:1 ratio.
 - **Prompt Used:**
-  > A modern, professional logo for a developer tool extension named 'Dataverse Column Namer'. The design should feature a stylized column or database icon being renamed or a magic wand efffect. Colors: PowerApps purple, dataverse green/blue, clean white background. Minimalist and flat design. Size: 300x300.
+  > High resolution 300x300 pixel version of the provided icon. The design must be identical to the input image but cleaner and sharper for use as a store logo. Centered on a clean white background.
 
 ### 2. Promotional Tiles
 **Small Tile**
