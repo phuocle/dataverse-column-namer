@@ -1,14 +1,12 @@
 (function () {
     'use strict';
 
-    // Set to true for debugging - all suffixes become __[type] pattern
     const IS_DEBUG = true;
 
     const CONFIG = {
         activeClass: 'dcn-env-active'
     };
 
-    // Debounce utility to prevent excessive function calls
     function debounce(func, wait) {
         let timeout;
         return function executedFunction(...args) {
@@ -22,29 +20,29 @@
     }
 
     const DEBUG_SUFFIXES = {
-        // Relationship Types
+
         lookup: '__lookup',
         customer: '__customerid',
-        // Choice Types
+
         choice: '__choice',
         choices: '__choices',
         yn: '__yn',
-        // Computed Types
+
         calculated: '__calculated',
         rollup: '__rollup',
         formula: '__formula',
-        // Number Types
+
         currency: '__currency',
         wholenumber: '__wholenumber',
         decimal: '__decimal',
         float: '__float',
         language: '__language',
-        // Date/Time Types
+
         datetime: '__datetime',
         dateonly: '__dateonly',
         duration: '__duration',
         timezone: '__timezone',
-        // Text Types
+
         text: '__text',
         text_area: '__text_area',
         text_richtext: '__text_richtext',
@@ -55,35 +53,35 @@
         phone: '__phone',
         url: '__url',
         ticker: '__ticker',
-        // File Types
+
         file: '__file',
         image: '__image'
     };
 
     const PROD_SUFFIXES = {
-        // Relationship Types
+
         lookup: '_id',
         customer: '_customerid',
-        // Choice Types
+
         choice: '_choice',
         choices: '_choices',
         yn: '_yn',
-        // Computed Types
+
         calculated: '_calculated',
         rollup: '_rollup',
         formula: '_fx',
-        // Number Types
+
         currency: '',
         wholenumber: '',
         decimal: '',
         float: '',
         language: '',
-        // Date/Time Types
+
         datetime: '',
         dateonly: '',
         duration: '',
         timezone: '',
-        // Text Types
+
         text: '',
         text_area: '',
         text_richtext: '',
@@ -94,7 +92,7 @@
         phone: '',
         url: '',
         ticker: '',
-        // File Types
+
         file: '',
         image: ''
     };
@@ -107,7 +105,7 @@
     const STORAGE_KEY = 'DataverseColumnNamer';
 
     async function loadSettings() {
-        // When IS_DEBUG is true, always use DEBUG_SUFFIXES (ignore storage)
+
         if (IS_DEBUG) {
             currentSuffixes = { ...DEBUG_SUFFIXES };
             currentNamingConvention = 'underscore_lowercase';
@@ -132,11 +130,9 @@
 
         const s = currentSuffixes;
 
-        // Cache dataType and behaviorType once to avoid repeated DOM queries
         const dataType = getDataType();
         const behaviorType = getBehaviorType();
 
-        // Behavior-based suffixes (take priority)
         if (behaviorType === 'calculated') {
             if (s.calculated && !schemaName.endsWith(s.calculated)) {
                 return schemaName + s.calculated;
@@ -151,7 +147,6 @@
             return schemaName;
         }
 
-        // Relationship Types
         if (dataType === 'customer') {
             if (s.customer && !schemaName.endsWith(s.customer)) {
                 return schemaName + s.customer;
@@ -166,7 +161,6 @@
             return schemaName;
         }
 
-        // Choice Types
         if (dataType === 'yes/no') {
             if (s.yn && !schemaName.endsWith(s.yn)) {
                 return schemaName + s.yn;
@@ -187,7 +181,6 @@
             return schemaName;
         }
 
-        // Computed Types
         if (dataType === 'formula') {
             if (s.formula && !schemaName.endsWith(s.formula)) {
                 return schemaName + s.formula;
@@ -195,7 +188,6 @@
             return schemaName;
         }
 
-        // Number Types
         if (dataType === 'currency') {
             if (s.currency && !schemaName.endsWith(s.currency)) {
                 return schemaName + s.currency;
@@ -231,7 +223,6 @@
             return schemaName;
         }
 
-        // Date/Time Types
         if (dataType === 'date and time') {
             if (s.datetime && !schemaName.endsWith(s.datetime)) {
                 return schemaName + s.datetime;
@@ -260,7 +251,6 @@
             return schemaName;
         }
 
-        // Text Types
         if (dataType === 'single line of text') {
             if (s.text && !schemaName.endsWith(s.text)) {
                 return schemaName + s.text;
@@ -331,7 +321,6 @@
             return schemaName;
         }
 
-        // File Types
         if (dataType === 'file') {
             if (s.file && !schemaName.endsWith(s.file)) {
                 return schemaName + s.file;
@@ -386,16 +375,17 @@
         behaviorButton: '#tooltipColumnBehavior',
         formatDropdown: '#ColumnForm_Format',
         formatValue: 'div[data-testid="columnFormat"] span',
-        multipleChoicesCheckbox: 'input[data-testid="multipleChoices"]'
+        multipleChoicesCheckbox: 'input[data-testid="multipleChoices"]',
+        environmentTitle: 'div[data-test-id="EnvironmentTitle"]',
+        behaviorOption: '#tooltipColumnBehavior-option',
+        headerText: 'h1[id$="-headerText"]',
+        panelContainer: '#pagePanels-layer-id',
+        badge: '.dcn-panel-badge',
+        stack: '.ms-Stack'
     };
 
-    function isHighlightActive() {
-        const envBtn = document.querySelector('div[data-test-id="EnvironmentTitle"]')?.closest('button');
-        return envBtn ? envBtn.classList.contains(CONFIG.activeClass) : false;
-    }
-
     function highlightEnvironmentButton() {
-        const envTitle = document.querySelector('div[data-test-id="EnvironmentTitle"]');
+        const envTitle = document.querySelector(SELECTORS.environmentTitle);
         if (!envTitle) return;
 
         const envBtn = envTitle.closest('button');
@@ -418,7 +408,7 @@
     }
 
     function getCurrentEnvironment() {
-        const envEl = document.querySelector('div[data-test-id="EnvironmentTitle"]');
+        const envEl = document.querySelector(SELECTORS.environmentTitle);
         return envEl ? normalizeString(envEl.textContent) : null;
     }
 
@@ -458,14 +448,14 @@
         let envTitleEl = null;
 
         for (let i = 0; i < maxAttempts; i++) {
-            envTitleEl = document.querySelector('div[data-test-id="EnvironmentTitle"]');
+            envTitleEl = document.querySelector(SELECTORS.environmentTitle);
             if (envTitleEl) break;
             await new Promise(resolve => setTimeout(resolve, 500));
         }
 
         if (!envTitleEl) {
             const bodyObserver = new MutationObserver((mutations, obs) => {
-                const el = document.querySelector('div[data-test-id="EnvironmentTitle"]');
+                const el = document.querySelector(SELECTORS.environmentTitle);
                 if (el) {
                     obs.disconnect();
                     attachEnvironmentTitleObserver(el);
@@ -509,12 +499,11 @@
         if (dataTypeLabel) {
             const text = dataTypeLabel.textContent.trim().toLowerCase();
 
-            // If it's "Single line of text", check the format dropdown for specific types
             if (text === 'single line of text') {
                 const formatValue = document.querySelector(SELECTORS.formatValue);
                 if (formatValue) {
                     const formatText = formatValue.textContent.trim().toLowerCase();
-                    // Return specific format if it's not just "text"
+
                     if (formatText === 'text area') {
                         return 'text_area';
                     }
@@ -536,7 +525,6 @@
                 }
             }
 
-            // If it's "Multiple lines of text", check the format dropdown
             if (text === 'multiple lines of text') {
                 const formatValue = document.querySelector(SELECTORS.formatValue);
                 if (formatValue) {
@@ -548,7 +536,6 @@
                 return 'multiline';
             }
 
-            // If it's "Whole number", check the format dropdown for specific formats
             if (text === 'whole number') {
                 const formatValue = document.querySelector(SELECTORS.formatValue);
                 if (formatValue) {
@@ -566,7 +553,6 @@
                 return 'whole number';
             }
 
-            // If it's "Date and time", check the format dropdown
             if (text === 'date and time') {
                 const formatValue = document.querySelector(SELECTORS.formatValue);
                 if (formatValue) {
@@ -590,7 +576,7 @@
     }
 
     function getBehaviorType() {
-        const behaviorOption = document.querySelector('#tooltipColumnBehavior-option');
+        const behaviorOption = document.querySelector(SELECTORS.behaviorOption);
         if (behaviorOption) {
             return behaviorOption.textContent.trim().toLowerCase();
         }
@@ -599,7 +585,6 @@
 
     let currentNamingConvention = 'underscore_lowercase';
 
-    // Use shared NamingUtils (loaded from naming-utils.js)
     function formatSchemaName(str) {
         if (!str) return '';
         return window.NamingUtils.formatSchemaName(str, currentNamingConvention);
@@ -647,11 +632,10 @@
         setReactInputValue(schemaInput, schemaName);
     }
 
-    // Debounced version to prevent excessive calls during rapid DOM changes
     const updateSchemaName = debounce(updateSchemaNameCore, 300);
 
     function isNewColumnPanel() {
-        const headerTitle = document.querySelector('h1[id$="-headerText"]');
+        const headerTitle = document.querySelector(SELECTORS.headerText);
         if (!headerTitle) return false;
         const headerText = normalizeString(headerTitle.textContent);
         return headerText === 'New column';
@@ -659,14 +643,12 @@
 
     function setupSchemaNameOverride() {
         const observer = new MutationObserver((mutations) => {
-            // Only proceed if we're on the "New column" panel
-            // If it's "Edit column", we stop here. Use return to skip Step 1 (Listener) & Step 2 (Function)
+
             if (!isNewColumnPanel()) return;
 
             const displayInput = document.querySelector(SELECTORS.displayNameInput);
             const dataTypeLabel = document.querySelector(SELECTORS.dataTypeLabel);
-            // We need the button for events, but we want the label for text reading.
-            // Using closest('button') from the label is a robust way to get the container without hardcoding multiple selectors.
+
             const dataTypeButton = dataTypeLabel ? dataTypeLabel.closest('button') : null;
 
             const behaviorButton = document.querySelector(SELECTORS.behaviorButton);
@@ -676,9 +658,9 @@
             if (displayInput && !displayInput.hasAttribute('data-mf-listening')) {
                 displayInput.setAttribute('data-mf-listening', 'true');
                 displayInput.addEventListener('input', handleDisplayNameChange);
-                // Handle browser autofill - 'change' fires when autofill completes
+
                 displayInput.addEventListener('change', handleDisplayNameChange);
-                // Handle paste events
+
                 displayInput.addEventListener('paste', (e) => {
                     setTimeout(() => handleDisplayNameChange({ target: displayInput }), 50);
                 });
@@ -698,7 +680,6 @@
                 behaviorButton.addEventListener('click', () => setTimeout(updateSchemaName, 500));
             }
 
-            // Listen to format dropdown (Email, Phone, URL, Ticker Symbol, Text Area, Rich Text, Duration, Language, Timezone)
             if (formatDropdown && !formatDropdown.hasAttribute('data-mf-listening')) {
                 formatDropdown.setAttribute('data-mf-listening', 'true');
                 const formatObserver = new MutationObserver(() => setTimeout(updateSchemaName, 100));
@@ -716,7 +697,7 @@
             }
         });
 
-        const panelContainer = document.getElementById('pagePanels-layer-id');
+        const panelContainer = document.querySelector(SELECTORS.panelContainer);
         if (panelContainer) {
             observer.observe(panelContainer, {
                 childList: true,
@@ -731,16 +712,15 @@
     }
 
     function injectPanelBadge() {
-        const existingBadge = document.querySelector('.dcn-panel-badge');
+        const existingBadge = document.querySelector(SELECTORS.badge);
         if (existingBadge) return;
 
-        // Only inject badge if we're on the "New column" panel
         if (!isNewColumnPanel()) return;
 
-        const headerTitle = document.querySelector('h1[id$="-headerText"]');
+        const headerTitle = document.querySelector(SELECTORS.headerText);
 
         if (headerTitle) {
-            const headerStack = headerTitle.closest('.ms-Stack');
+            const headerStack = headerTitle.closest(SELECTORS.stack);
 
             if (headerStack && headerStack.parentElement) {
                 const mainContentArea = headerStack.parentElement;

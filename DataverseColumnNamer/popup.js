@@ -1,6 +1,5 @@
 const STORAGE_KEY = 'DataverseColumnNamer';
 
-// Set to true for debugging - all suffixes become __[type] pattern
 const IS_DEBUG = true;
 
 const currentEnvEl = document.getElementById('currentEnv');
@@ -18,29 +17,29 @@ const messageEl = document.getElementById('message');
 const namingConventionSelect = document.getElementById('namingConvention');
 
 const suffixInputs = {
-    // Relationship Types
+    
     lookup: document.getElementById('suffixLookup'),
     customer: document.getElementById('suffixCustomer'),
-    // Choice Types
+    
     choice: document.getElementById('suffixChoice'),
     choices: document.getElementById('suffixChoices'),
     yn: document.getElementById('suffixYesNo'),
-    // Computed Types
+    
     calculated: document.getElementById('suffixCalculated'),
     rollup: document.getElementById('suffixRollup'),
     formula: document.getElementById('suffixFormula'),
-    // Number Types
+    
     currency: document.getElementById('suffixCurrency'),
     wholenumber: document.getElementById('suffixWholeNumber'),
     decimal: document.getElementById('suffixDecimal'),
     float: document.getElementById('suffixFloat'),
     language: document.getElementById('suffixLanguage'),
-    // Date/Time Types
+    
     datetime: document.getElementById('suffixDateTime'),
     dateonly: document.getElementById('suffixDateOnly'),
     duration: document.getElementById('suffixDuration'),
     timezone: document.getElementById('suffixTimezone'),
-    // Text Types
+    
     text: document.getElementById('suffixText'),
     text_area: document.getElementById('suffixTextArea'),
     text_richtext: document.getElementById('suffixTextRichText'),
@@ -51,35 +50,35 @@ const suffixInputs = {
     phone: document.getElementById('suffixPhone'),
     url: document.getElementById('suffixUrl'),
     ticker: document.getElementById('suffixTicker'),
-    // File Types
+    
     file: document.getElementById('suffixFile'),
     image: document.getElementById('suffixImage')
 };
 
 const DEBUG_SUFFIXES = {
-    // Relationship Types
+    
     lookup: '__lookup',
     customer: '__customerid',
-    // Choice Types
+    
     choice: '__choice',
     choices: '__choices',
     yn: '__yn',
-    // Computed Types
+    
     calculated: '__calculated',
     rollup: '__rollup',
     formula: '__formula',
-    // Number Types
+    
     currency: '__currency',
     wholenumber: '__wholenumber',
     decimal: '__decimal',
     float: '__float',
     language: '__language',
-    // Date/Time Types
+    
     datetime: '__datetime',
     dateonly: '__dateonly',
     duration: '__duration',
     timezone: '__timezone',
-    // Text Types
+    
     text: '__text',
     text_area: '__text_area',
     text_richtext: '__text_richtext',
@@ -90,35 +89,35 @@ const DEBUG_SUFFIXES = {
     phone: '__phone',
     url: '__url',
     ticker: '__ticker',
-    // File Types
+    
     file: '__file',
     image: '__image'
 };
 
 const PROD_SUFFIXES = {
-    // Relationship Types
+    
     lookup: '_id',
     customer: '_customerid',
-    // Choice Types
+    
     choice: '_choice',
     choices: '_choices',
     yn: '_yn',
-    // Computed Types
+    
     calculated: '_calculated',
     rollup: '_rollup',
     formula: '_fx',
-    // Number Types
+    
     currency: '',
     wholenumber: '',
     decimal: '',
     float: '',
     language: '',
-    // Date/Time Types
+    
     datetime: '',
     dateonly: '',
     duration: '',
     timezone: '',
-    // Text Types
+    
     text: '',
     text_area: '',
     text_richtext: '',
@@ -129,7 +128,7 @@ const PROD_SUFFIXES = {
     phone: '',
     url: '',
     ticker: '',
-    // File Types
+    
     file: '',
     image: ''
 };
@@ -253,7 +252,6 @@ function updateStatus(currentEnv, targetEnv) {
     const normalizedCurrent = normalizeString(currentEnv);
     const normalizedTarget = normalizeString(targetEnv);
 
-    // Status text & badge - DEBUG mode shows its own message
     if (IS_DEBUG) {
         statusSection.className = 'status-badge debug-mode';
         statusText.textContent = 'YOU ARE IN DEBUG MODE';
@@ -268,7 +266,6 @@ function updateStatus(currentEnv, targetEnv) {
         statusText.textContent = 'Inactive (environment mismatch)';
     }
 
-    // Button logic - same for DEBUG and PRODUCTION
     if (!currentEnvironment) {
         useCurrentBtn.disabled = true;
         useCurrentBtn.title = 'No current environment detected';
@@ -295,7 +292,6 @@ async function init() {
     ]);
     updateStatus(currentEnv, targetEnv);
 
-    // Disable suffix inputs when in debug mode
     if (IS_DEBUG) {
         for (const input of Object.values(suffixInputs)) {
             input.disabled = true;
@@ -320,13 +316,12 @@ function exportConfig() {
         Suffixes: {}
     };
 
-    // Export actual values being used (from input value or DEFAULT_SUFFIXES)
     for (const [key, input] of Object.entries(suffixInputs)) {
         const val = input.value.trim();
         if (val) {
             config.Suffixes[key] = val;
         } else if (DEFAULT_SUFFIXES[key]) {
-            // If input is empty, use default suffix
+            
             config.Suffixes[key] = DEFAULT_SUFFIXES[key];
         }
     }
@@ -355,12 +350,10 @@ function importConfig(event) {
         try {
             const config = JSON.parse(e.target.result);
 
-            // Apply naming convention
             if (config.NamingConvention) {
                 namingConventionSelect.value = config.NamingConvention;
             }
 
-            // Apply suffixes
             if (config.Suffixes) {
                 for (const [key, value] of Object.entries(config.Suffixes)) {
                     if (suffixInputs[key]) {
@@ -376,7 +369,6 @@ function importConfig(event) {
     };
     reader.readAsText(file);
 
-    // Reset file input
     event.target.value = '';
 }
 

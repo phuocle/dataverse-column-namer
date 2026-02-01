@@ -1,16 +1,11 @@
-/**
- * Naming Convention Utility Functions
- * Shared between content.js (browser) and unit tests (Node.js)
- */
+
 
 (function (exports) {
     'use strict';
 
-    // Normalize input: replace special characters with spaces, then trim
     function normalizeInput(input) {
         if (!input) return '';
-        // Replace any non-alphanumeric characters (except spaces) with space
-        // This treats &&&, @@@, --- etc. as word separators
+
         return input.trim().replace(/[^a-zA-Z0-9\s]+/g, ' ').replace(/\s+/g, ' ').trim();
     }
 
@@ -45,7 +40,7 @@
     function toRemoveSpaces(input) {
         if (!input) return '';
         const normalized = normalizeInput(input);
-        // Remove spaces, preserve case
+        
         return normalized.replace(/\s+/g, '');
     }
 
@@ -70,12 +65,11 @@
     function formatSchemaName(str, convention) {
         if (!str) return '';
         let result = applyNamingConvention(str, convention);
-        // Final cleanup: remove any remaining non-alphanumeric (except underscore)
+        
         result = result.replace(/[^a-zA-Z0-9_]/g, '');
         return result;
     }
 
-    // Export functions
     exports.normalizeInput = normalizeInput;
     exports.toPascalCase = toPascalCase;
     exports.toCamelCase = toCamelCase;
