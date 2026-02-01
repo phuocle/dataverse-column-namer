@@ -10,6 +10,12 @@ This file documents the assets generated for the Microsoft Edge Add-ons store an
 - **Prompt Used:**
   > High resolution 300x300 pixel version of the provided icon. The design must be identical to the input image but cleaner and sharper for use as a store logo. Centered on a clean white background.
 
+**Alternative Logo (DC Style)**
+- **File:** `store_logo2.png`
+- **Size:** 300x300
+- **Prompt Used:**
+  > Extract the 'DC' stylized logo from the bottom right of the provided image. Create a high-quality square 300x300 pixel logo from it on a transparent background.
+
 ### 2. Promotional Tiles
 **Small Tile**
 - **File:** `small_tile.png`
