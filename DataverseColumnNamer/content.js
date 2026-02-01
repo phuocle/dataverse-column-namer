@@ -382,9 +382,11 @@
     const SELECTORS = {
         displayNameInput: '#ColumnForm_DisplayName',
         schemaNameInput: 'input[data-testid="FormSchemaName"]',
-        dataTypeButton: '#ColumnDataTypeFilterContextualMenu .ms-Button-label',
+        dataTypeLabel: '#ColumnDataTypeFilterContextualMenu .ms-Button-label',
+        behaviorButton: '#tooltipColumnBehavior',
         formatDropdown: '#ColumnForm_Format',
-        formatValue: 'div[data-testid="columnFormat"] span'
+        formatValue: 'div[data-testid="columnFormat"] span',
+        multipleChoicesCheckbox: 'input[data-testid="multipleChoices"]'
     };
 
     function isHighlightActive() {
@@ -502,7 +504,7 @@
     }
 
     function getDataType() {
-        const dataTypeLabel = document.querySelector(SELECTORS.dataTypeButton);
+        const dataTypeLabel = document.querySelector(SELECTORS.dataTypeLabel);
 
         if (dataTypeLabel) {
             const text = dataTypeLabel.textContent.trim().toLowerCase();
@@ -662,9 +664,14 @@
             if (!isNewColumnPanel()) return;
 
             const displayInput = document.querySelector(SELECTORS.displayNameInput);
-            const dataTypeButton = document.querySelector('#ColumnDataTypeFilterContextualMenu');
-            const behaviorButton = document.querySelector('#tooltipColumnBehavior');
+            const dataTypeLabel = document.querySelector(SELECTORS.dataTypeLabel);
+            // We need the button for events, but we want the label for text reading.
+            // Using closest('button') from the label is a robust way to get the container without hardcoding multiple selectors.
+            const dataTypeButton = dataTypeLabel ? dataTypeLabel.closest('button') : null;
+
+            const behaviorButton = document.querySelector(SELECTORS.behaviorButton);
             const formatDropdown = document.querySelector(SELECTORS.formatDropdown);
+            const multipleChoicesCheckbox = document.querySelector(SELECTORS.multipleChoicesCheckbox);
 
             if (displayInput && !displayInput.hasAttribute('data-mf-listening')) {
                 displayInput.setAttribute('data-mf-listening', 'true');
@@ -699,23 +706,6 @@
                 formatDropdown.addEventListener('click', () => setTimeout(updateSchemaName, 500));
             }
 
-            // Also listen to the format value element directly for changes
-            const formatValueEl = document.querySelector(SELECTORS.formatValue);
-            if (formatValueEl && !formatValueEl.hasAttribute('data-mf-listening')) {
-                formatValueEl.setAttribute('data-mf-listening', 'true');
-                const formatValueObserver = new MutationObserver(() => setTimeout(updateSchemaName, 100));
-                formatValueObserver.observe(formatValueEl, { childList: true, subtree: true, characterData: true });
-            }
-
-            // Watch the parent container of format value for any DOM changes
-            const formatContainer = document.querySelector('div[data-testid="columnFormat"]');
-            if (formatContainer && !formatContainer.hasAttribute('data-mf-listening')) {
-                formatContainer.setAttribute('data-mf-listening', 'true');
-                const formatContainerObserver = new MutationObserver(() => setTimeout(updateSchemaName, 100));
-                formatContainerObserver.observe(formatContainer, { childList: true, subtree: true, characterData: true });
-            }
-
-            const multipleChoicesCheckbox = document.querySelector('input[data-testid="multipleChoices"]');
             if (multipleChoicesCheckbox && !multipleChoicesCheckbox.hasAttribute('data-mf-listening')) {
                 multipleChoicesCheckbox.setAttribute('data-mf-listening', 'true');
                 multipleChoicesCheckbox.addEventListener('change', () => setTimeout(updateSchemaName, 50));
