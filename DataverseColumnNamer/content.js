@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    const IS_DEBUG = true;
+    const IS_DEBUG = false;
 
     const CONFIG = {
         activeClass: 'dcn-env-active'

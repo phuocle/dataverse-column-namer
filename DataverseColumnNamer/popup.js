@@ -1,6 +1,6 @@
 const STORAGE_KEY = 'DataverseColumnNamer';
 
-const IS_DEBUG = true;
+const IS_DEBUG = false;
 
 const currentEnvEl = document.getElementById('currentEnv');
 const statusSection = document.getElementById('statusSection');
@@ -17,29 +17,29 @@ const messageEl = document.getElementById('message');
 const namingConventionSelect = document.getElementById('namingConvention');
 
 const suffixInputs = {
-    
+
     lookup: document.getElementById('suffixLookup'),
     customer: document.getElementById('suffixCustomer'),
-    
+
     choice: document.getElementById('suffixChoice'),
     choices: document.getElementById('suffixChoices'),
     yn: document.getElementById('suffixYesNo'),
-    
+
     calculated: document.getElementById('suffixCalculated'),
     rollup: document.getElementById('suffixRollup'),
     formula: document.getElementById('suffixFormula'),
-    
+
     currency: document.getElementById('suffixCurrency'),
     wholenumber: document.getElementById('suffixWholeNumber'),
     decimal: document.getElementById('suffixDecimal'),
     float: document.getElementById('suffixFloat'),
     language: document.getElementById('suffixLanguage'),
-    
+
     datetime: document.getElementById('suffixDateTime'),
     dateonly: document.getElementById('suffixDateOnly'),
     duration: document.getElementById('suffixDuration'),
     timezone: document.getElementById('suffixTimezone'),
-    
+
     text: document.getElementById('suffixText'),
     text_area: document.getElementById('suffixTextArea'),
     text_richtext: document.getElementById('suffixTextRichText'),
@@ -50,35 +50,35 @@ const suffixInputs = {
     phone: document.getElementById('suffixPhone'),
     url: document.getElementById('suffixUrl'),
     ticker: document.getElementById('suffixTicker'),
-    
+
     file: document.getElementById('suffixFile'),
     image: document.getElementById('suffixImage')
 };
 
 const DEBUG_SUFFIXES = {
-    
+
     lookup: '__lookup',
     customer: '__customerid',
-    
+
     choice: '__choice',
     choices: '__choices',
     yn: '__yn',
-    
+
     calculated: '__calculated',
     rollup: '__rollup',
     formula: '__formula',
-    
+
     currency: '__currency',
     wholenumber: '__wholenumber',
     decimal: '__decimal',
     float: '__float',
     language: '__language',
-    
+
     datetime: '__datetime',
     dateonly: '__dateonly',
     duration: '__duration',
     timezone: '__timezone',
-    
+
     text: '__text',
     text_area: '__text_area',
     text_richtext: '__text_richtext',
@@ -89,35 +89,35 @@ const DEBUG_SUFFIXES = {
     phone: '__phone',
     url: '__url',
     ticker: '__ticker',
-    
+
     file: '__file',
     image: '__image'
 };
 
 const PROD_SUFFIXES = {
-    
+
     lookup: '_id',
     customer: '_customerid',
-    
+
     choice: '_choice',
     choices: '_choices',
     yn: '_yn',
-    
+
     calculated: '_calculated',
     rollup: '_rollup',
     formula: '_fx',
-    
+
     currency: '',
     wholenumber: '',
     decimal: '',
     float: '',
     language: '',
-    
+
     datetime: '',
     dateonly: '',
     duration: '',
     timezone: '',
-    
+
     text: '',
     text_area: '',
     text_richtext: '',
@@ -128,7 +128,7 @@ const PROD_SUFFIXES = {
     phone: '',
     url: '',
     ticker: '',
-    
+
     file: '',
     image: ''
 };
@@ -321,7 +321,7 @@ function exportConfig() {
         if (val) {
             config.Suffixes[key] = val;
         } else if (DEFAULT_SUFFIXES[key]) {
-            
+
             config.Suffixes[key] = DEFAULT_SUFFIXES[key];
         }
     }
