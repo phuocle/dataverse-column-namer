@@ -15,7 +15,7 @@ This file documents the assets generated for the Microsoft Edge Add-ons store an
 - **File:** `small_tile.png`
 - **Size:** 440x280
 - **Prompt Used:**
-  > Promotional tile for 'Dataverse Column Namer'. Text: 'Auto-Name Columns'. Background: Soft gradient purple and blue. Icon: Magic wand renaming a database column. Size: 440x280. Professional style.
+  > Small promotional tile for 'Dataverse Column Namer'. Style based on 'Smart Column Naming' concept. Visuals: Compact abstract UI showing automated arrow flow from Display Name to Schema Name. Colors: Microsoft Power Platform aesthetics (purple/blue gradients), same style as the large tile. TEXT MUST BE EXACTLY: 'Smart Column Naming for PowerApps'. Ensure text is legible on 440x280 canvas.
 
 **Large Tile**
 - **File:** `large_tile.png`
@@ -27,7 +27,7 @@ This file documents the assets generated for the Microsoft Edge Add-ons store an
 - **File:** `marquee.png`
 - **Size:** 1400x560
 - **Prompt Used:**
-  > Marquee banner for 'Dataverse Column Namer'. Wide format. Text: 'Boost Productivity in PowerApps'. Visual: Clean, modern workflow illustration showing automated naming. Professional, enterprise-grade look. Size: 1400x560.
+  > Marquee banner for 'Dataverse Column Namer'. Professional 1400x560 promotional graphic. Visual composition: Split view showing the 'Before' and 'After' of the extension's magic. Left side: A PowerApps input field 'Display Name: Customer Email'. Center: A stylized glowing arrow or gear icon representing automation. Right side: The result 'Schema Name: new_CustomerEmail_email' automatically filled. Background: Fluent UI design style, PowerApps purple to blue gradient. Text: 'Automated Schema Naming for Dataverse'.
 
 ### 3. Screenshots (Mockups)
 **Popup Interface**
