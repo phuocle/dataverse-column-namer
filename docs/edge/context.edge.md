@@ -16,6 +16,9 @@ This file documents the assets generated for the Microsoft Edge Add-ons store an
 - **Prompt Used:**
   > Extract the 'DC' stylized logo from the bottom right of the provided image. Create a high-quality square 300x300 pixel logo from it on a transparent background.
 
+> [!NOTE]
+> This logo corresponds to the generated extension icons in `docs/icons/` (16, 48, 128px).
+
 ### 2. Promotional Tiles
 **Small Tile**
 - **File:** `small_tile.png`
@@ -71,28 +74,53 @@ This file documents the assets generated for the Microsoft Edge Add-ons store an
 ```markdown
 # Dataverse Column Namer
 
-Automatically generates schema names for Dataverse columns in Microsoft PowerApps, following configurable naming conventions.
+**Boost your Power Apps development productivity with automated, consistent schema naming.**
 
-## Features
-- 🎯 Auto-generate schema names from display names
-- 🔧 5 naming conventions (underscore_lowercase, pascalCase, camelCase, etc.)
-- 📝 Type-based suffixes (e.g., _lookup, _choice, _currency)
-- 🌍 Environment detection & activation
-- 💾 Import/Export configuration
-- ⚡ Real-time schema name updates
+Dataverse Column Namer is the essential utility for Microsoft Power Platform developers and consultants. It eliminates the tedious, error-prone manual process of typing schema names for Dataverse columns. Just type your "Display Name", and watch the "Schema Name" automatically populate based on your preferred convention—instantly.
 
-## How to Use
-1. Install the extension
-2. Navigate to make.powerapps.com
-3. Configure your environment and naming convention
-4. Create a new column
-5. Type the display name - schema name is auto-generated!
+## 🚀 Key Features
 
-## Privacy
-This extension does not collect any personal data. All settings are stored locally in your browser.
+### 🎯 Automated Naming
+- **Instant Generation**: As you type the Display Name, the Schema Name is generated in real-time.
+- **Smart Conversion**: Automatically handles special characters, spaces, and casing logic.
+
+### 🔧 Flexible Naming Conventions
+Choose from 5 industry-standard naming styles to match your project's coding guidelines:
+- **underscore_lowercase** (e.g., `hello_world`) - *Default*
+- **underscore_preserve** (e.g., `Hello_World`)
+- **pascalCase** (e.g., `HelloWorld`)
+- **camelCase** (e.g., `helloWorld`)
+- **remove_spaces** (e.g., `helloworld`)
+
+### 📝 Intelligent Type-Based Suffixes
+Automatically appends standardized suffixes based on the column data type to keep your schema clean and organized:
+- **Lookups**: `_id`, `_customerid`
+- **Choices**: `_choice`, `_choices`, `_yn`
+- **Calculated/Rollup**: `_calculated`, `_rollup`
+- **Date/Time**: `_date`, `_time`
+- *Fully configurable!* Customize these suffixes to match your organization's specific standards.
+
+### 🌍 Environment Awareness
+- **Safe Activation**: The extension only activates on Power Apps environments you explicitly "pin".
+- **Visual Indicators**: Clear visual feedback (Active/Inactive) directly in the popup shows when the tool is running.
+- **Prevent Accidents**: Avoid unintentional naming changes in inconsistent environments.
+
+### 💾 Configuration Management
+- **Import/Export**: Easily share your naming standards with your team by exporting your configuration to a JSON file.
+- **Cross-Device Sync**: Keep your settings consistent across different machines.
+
+## 💡 Why use Dataverse Column Namer?
+- **Save Time**: Shave seconds off every column creation. In a large project, this saves hours.
+- **Consistency**: Ensure every developer on the team uses the exact same naming pattern.
+- **Reduce Errors**: No more typos or accidentally leaving the schema name as `new_column`.
+- **Focus on Logic**: Stop worrying about mundane details and focus on building great apps.
+
+## Privacy & Security
+This extension runs entirely locally within your browser. It does not transmit any data to external servers or collect any personal information. Your configuration is stored safely in your browser's local storage.
 
 ## Support
-For issues or feature requests, visit: https://github.com/phuocle/dataverse-column-namer
+Found a bug or have a feature request? We'd love to hear from you!
+Visit our GitHub repository: [https://github.com/phuocle/dataverse-column-namer](https://github.com/phuocle/dataverse-column-namer)
 ```
 
 ### Additional Info
