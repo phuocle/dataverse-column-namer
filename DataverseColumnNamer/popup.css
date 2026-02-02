@@ -104,17 +104,25 @@ body {
     font-weight: 500;
 }
 
+
 .status-badge.active {
     background: var(--colorStatusSuccessBackground);
     color: var(--colorStatusSuccessForeground);
-    border: 2px solid var(--colorStatusSuccessForeground);
+    border: 1px solid var(--colorStatusSuccessForeground);
     width: 100%;
     justify-content: center;
+    box-sizing: border-box;
+    text-align: center;
 }
 
 .status-badge.inactive {
-    background: var(--colorStatusWarningBackground);
-    color: var(--colorStatusWarningForeground);
+    background: #e6f2fb; /* Light Blue */
+    color: var(--colorBrandBackground); /* Brand Blue */
+    border: 1px solid var(--colorBrandBackground);
+    width: 100%;
+    justify-content: center;
+    box-sizing: border-box;
+    text-align: center;
 }
 
 .status-badge.debug-mode {
@@ -124,13 +132,13 @@ body {
     border: 2px solid #a82a2e;
     width: 100%;
     justify-content: center;
+    box-sizing: border-box;
+    text-align: center;
 }
 
-.status-badge.debug-mode .status-dot {
-    display: none;
-}
-
-.status-badge.active .status-dot {
+.status-badge.debug-mode .status-dot,
+.status-badge.active .status-dot,
+.status-badge.inactive .status-dot {
     display: none;
 }
 
