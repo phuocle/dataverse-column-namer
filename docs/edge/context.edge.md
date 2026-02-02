@@ -49,7 +49,12 @@ This file documents the assets generated for the Microsoft Edge Add-ons store an
 **Configuration Settings**
 - **File:** `screenshot_config.png`
 - **Prompt Used:**
-  > Screenshot mockup of configuration settings for suffixes. List of data types (Lookup, Choice, Currency) with corresponding text inputs for suffixes (e.g., _id, _code, _cur). Modern table layout. Size: 640x400.
+  > Create a 640x400 landscape image. Place the provided vertical UI screenshot in the center. The background should be a modern, professional gradient.
+
+**Active Environment Indicator**
+- **File:** `screenshot_active.png`
+- **Prompt Used:**
+  > Create a 640x400 landscape image. Place the provided horizontal UI screenshot in the center. The background should be a modern, professional gradient. Add a nice drop shadow. Demonstrates the 'Active Environment' feature.
 
 ---
 
