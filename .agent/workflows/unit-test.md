@@ -1,7 +1,3 @@
----
-description: Run unit tests for naming convention functions
----
-
 # Unit Test Workflow
 
 Run naming convention unit tests to verify all functions work correctly.
@@ -12,19 +8,19 @@ Run naming convention unit tests to verify all functions work correctly.
 
 1. Navigate to the repository root:
    ```
-   cd d:\github\dataverse-column-namer
+   cd c:\src\github\dataverse-column-namer
    ```
 
 2. Run the naming convention tests:
    ```
-   node DataverseColumnNamerTest/naming-convention.test.js
+   node DataverseColumnNamer.Test/naming-convention.test.js
    ```
 
 3. Verify all tests pass (exit code 0)
 
 ## Test File Location
 
-- `DataverseColumnNamerTest/naming-convention.test.js`
+- `DataverseColumnNamer.Test/naming-convention.test.js`
 
 ## Test Format
 

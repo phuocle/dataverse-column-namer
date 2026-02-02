@@ -40,8 +40,8 @@
     function toRemoveSpaces(input) {
         if (!input) return '';
         const normalized = normalizeInput(input);
-        
-        return normalized.replace(/\s+/g, '');
+
+        return normalized.toLowerCase().replace(/\s+/g, '');
     }
 
     function applyNamingConvention(str, convention) {
@@ -65,7 +65,7 @@
     function formatSchemaName(str, convention) {
         if (!str) return '';
         let result = applyNamingConvention(str, convention);
-        
+
         result = result.replace(/[^a-zA-Z0-9_]/g, '');
         return result;
     }
