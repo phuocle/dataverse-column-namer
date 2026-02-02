@@ -1,6 +1,6 @@
 const STORAGE_KEY = 'DataverseColumnNamer';
 
-const IS_DEBUG = false;
+const IS_DEBUG = true;
 
 const currentEnvEl = document.getElementById('currentEnv');
 const statusSection = document.getElementById('statusSection');

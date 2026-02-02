@@ -39,7 +39,7 @@ Tests follow this format: `[convention, input, expectedOutput]`
 | `pascalCase` | `HelloWorld` |
 | `camelCase` | `helloWorld` |
 | `underscore_preserve` | `Hello_World` |
-| `remove_spaces` | `HelloWorld` |
+| `remove_spaces` | `helloworld` |
 
 ## Adding New Tests
 

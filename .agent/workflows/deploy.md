@@ -50,7 +50,7 @@ New-Item -ItemType Directory -Force -Path "../deploy"
 
 ### 4. Create the store-ready extension ZIP
 ```powershell
-Compress-Archive -Path "./manifest.json", "./content.js", "./utils.js", "./styles.css", "./popup.css", "./popup.html", "./popup.js", "./icons" -DestinationPath "../deploy/DataverseColumnNamer.zip" -Force
+Compress-Archive -Path "./manifest.json", "./content.js", "./naming-utils.js", "./styles.css", "./popup.css", "./popup.html", "./popup.js", "./icons" -DestinationPath "../deploy/DataverseColumnNamer.zip" -Force
 ```
 
 ### 5. Verify the package
