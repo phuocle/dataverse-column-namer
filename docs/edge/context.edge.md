@@ -36,7 +36,7 @@ This file documents the assets generated for the Microsoft Edge Add-ons store an
 - **File:** `marquee.png`
 - **Size:** 1400x560
 - **Prompt Used:**
-  > Marquee banner for 'Dataverse Column Namer'. Professional 1400x560 promotional graphic. Visual composition: Split view showing the 'Before' and 'After' of the extension's magic. Left side: A PowerApps input field 'Display Name: Customer Email'. Center: A stylized glowing arrow or gear icon representing automation. Right side: The result 'Schema Name: new_CustomerEmail_email' automatically filled. Background: Fluent UI design style, PowerApps purple to blue gradient. Text: 'Automated Schema Naming for Dataverse'.
+  > Marquee banner for 'Dataverse Column Namer'. Professional 1400x560 promotional graphic. Visual composition: Split view showing the 'Before' and 'After' of the extension's magic. Left side: A **Dataverse** input field 'Display Name: Customer Email'. Center: A stylized glowing arrow or gear icon representing automation. Right side: The result 'Schema Name: new_CustomerEmail_email' automatically filled with **Dataverse** header. Background: Fluent UI design style, PowerApps purple to blue gradient. No extra logos in corners.
 
 ### 3. Screenshots (Mockups)
 **Popup Interface**
