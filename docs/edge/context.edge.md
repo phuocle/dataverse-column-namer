@@ -85,12 +85,47 @@ Dataverse Column Namer is the essential utility for Microsoft Power Platform dev
 - **Smart Conversion**: Automatically handles special characters, spaces, and casing logic.
 
 ### 🔧 Flexible Naming Conventions
-Choose from 5 industry-standard naming styles to match your project's coding guidelines:
-- **underscore_lowercase** (e.g., `hello_world`) - *Default*
-- **underscore_preserve** (e.g., `Hello_World`)
-- **pascalCase** (e.g., `HelloWorld`)
-- **camelCase** (e.g., `helloWorld`)
-- **remove_spaces** (e.g., `helloworld`)
+Choose from 5 industry-standard naming styles to match your project's coding guidelines.
+
+#### 1. underscore_lowercase (Default)
+Clean, standard Dataverse naming style.
+- `Hello World` → `hello_world`
+- `Customer ID` → `customer_id`
+- `Price ($)` → `price`
+- `User@Email.com` → `user_email_com`
+- `Year 2024` → `year_2024`
+
+#### 2. underscore_preserve
+Keeps original casing, useful for specific coding standards.
+- `Hello World` → `Hello_World`
+- `Customer ID` → `Customer_ID`
+- `iOS Version` → `iOS_Version`
+- `Price ($)` → `Price`
+- `eCommerce Site` → `eCommerce_Site`
+
+#### 3. pascalCase
+Compact style, popular in C# and .NET development.
+- `Hello World` → `HelloWorld`
+- `customer name` → `CustomerName`
+- `new-customer-id` → `NewCustomerId`
+- `date_of_birth` → `DateOfBirth`
+- `123 Start` → `123Start`
+
+#### 4. camelCase
+Standard JavaScript/TypeScript naming convention.
+- `Hello World` → `helloWorld`
+- `Customer ID` → `customerId`
+- `API Key` → `apiKey`
+- `Submit-Request-Now` → `submitRequestNow`
+- `1st Place` → `1stPlace`
+
+#### 5. remove_spaces
+Simplest form, lowercase with no separators.
+- `Hello World` → `helloworld`
+- `Customer ID` → `customerid`
+- `First_Name` → `firstname`
+- `Price ($)` → `price`
+- `A B C D` → `abcd`
 
 ### 📝 Intelligent Type-Based Suffixes
 Automatically appends standardized suffixes based on the column data type to keep your schema clean and organized:
