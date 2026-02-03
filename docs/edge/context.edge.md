@@ -7,14 +7,10 @@ This file documents the assets generated for the Microsoft Edge Add-ons store an
 ### 1. Store Logo
 - **File:** `store_logo.png`
 - **Size:** 300x300 (Source), required 1:1 ratio.
-- **Prompt Used:**
-  > High resolution 300x300 pixel version of the provided icon. The design must be identical to the input image but cleaner and sharper for use as a store logo. Centered on a clean white background.
 
 **Alternative Logo (DC Style)**
 - **File:** `store_logo2.png`
 - **Size:** 300x300
-- **Prompt Used:**
-  > Extract the 'DC' stylized logo from the bottom right of the provided image. Create a high-quality square 300x300 pixel logo from it on a transparent background.
 
 > [!NOTE]
 > This logo corresponds to the generated extension icons in `docs/icons/` (16, 48, 128px).
@@ -23,41 +19,31 @@ This file documents the assets generated for the Microsoft Edge Add-ons store an
 **Small Tile**
 - **File:** `small_tile.png`
 - **Size:** 440x280
-- **Prompt Used:**
-  > Small promotional tile for 'Dataverse Column Namer'. Style based on 'Smart Column Naming' concept. Visuals: Compact abstract UI showing automated arrow flow from Display Name to Schema Name. Colors: Microsoft Power Platform aesthetics (purple/blue gradients), same style as the large tile. TEXT MUST BE EXACTLY: 'Smart Column Naming for PowerApps'. Ensure text is legible on 440x280 canvas.
 
 **Large Tile**
 - **File:** `large_tile.png`
 - **Size:** 920x680
-- **Prompt Used:**
-  > Large promotional tile for 'Dataverse Column Namer'. Featured text: 'Smart Column Naming for PowerApps'. Visuals: Abstract UI showing a display name being converted to a schema name automatically. Colors: Microsoft Power Platform aesthetics. Size: 920x680.
 
 **Marquee**
 - **File:** `marquee.png`
 - **Size:** 1400x560
-- **Prompt Used:**
-  > Marquee banner for 'Dataverse Column Namer'. Professional 1400x560 promotional graphic. Visual composition: Split view showing the 'Before' and 'After' of the extension's magic. Left side: A **Dataverse** input field 'Display Name: Customer Email'. Center: A stylized glowing arrow or gear icon representing automation. Right side: The result 'Schema Name: new_CustomerEmail_email' automatically filled with **Dataverse** header. Background: Fluent UI design style, PowerApps purple to blue gradient. No extra logos in corners.
 
 ### 3. Screenshots (Mockups)
 **Popup Interface**
 - **File:** `screenshot_popup.png`
-- **Prompt Used:**
-  > Screenshot mockup of a browser extension popup named 'Dataverse Column Namer'. Dark mode UI. Shows settings for 'Target Environment' (Dev) and 'Naming Convention' (Underscore Lowercase). Clean, modern interface. Size: 640x400.
 
 **New Column Panel**
 - **File:** `screenshot_panel.png`
-- **Prompt Used:**
-  > Screenshot mockup of PowerApps 'New Column' panel. Display Name input: 'Start Date'. Schema Name input automatically filled with 'new_startdate_date'. Highlighted schema name field indicating automation. Size: 640x400.
 
 **Configuration Settings**
 - **File:** `screenshot_config.png`
-- **Prompt Used:**
-  > Create a 640x400 landscape image. Place the provided vertical UI screenshot in the center. The background should be a modern, professional gradient.
 
 **Active Environment Indicator**
 - **File:** `screenshot_active.png`
-- **Prompt Used:**
-  > Create a 640x400 landscape image. Place the provided horizontal UI screenshot in the center. The background should be a modern, professional gradient. Add a nice drop shadow. Demonstrates the 'Active Environment' feature.
+
+### 4. Demo Video
+- **File:** `demo.gif`
+- **Context:** A short animation demonstrating the extension in action. Useful for the "Promotional Video" or "Demo" section if supported, or as a high-quality animated asset for external promotion.
 
 ---
 
@@ -162,3 +148,28 @@ Visit our GitHub repository: [https://github.com/phuocle/dataverse-column-namer]
 - **Category:** Developer Tools
 - **Website:** https://github.com/phuocle/dataverse-column-namer
 - **Support:** https://github.com/phuocle/dataverse-column-namer/issues
+
+---
+
+## 🚀 Deployment Instructions
+
+### Microsoft Edge Add-ons (Partner Center)
+1.  **Log in**: Go to Partner Center Dashboard (use the correct directory).
+2.  **Create New Extension**: Upload the `.zip` file from `deploy/`.
+3.  **Store Listing**:
+    - **Description**: Copy-paste the **Long Description** markdown above.
+    - **Logos**: Upload `store_logo.png` (300x300) and `small_tile.png` (440x280), `large_tile.png` (920x680).
+    - **Screenshots**: Upload all files from `docs/edge/` (Popup, Panel, etc.).
+    - **Demo Video**: Upload `demo.gif` if a video upload section exists, or use it for promotional materials.
+4.  **Properties**:
+    - Set Category to "Developer Tools".
+    - Add Support URL from "Additional Info".
+
+### Chrome Web Store (Developer Dashboard)
+1.  **Log in**: Chrome Web Store Developer Dashboard.
+2.  **Upload**: Upload the `.zip` file.
+3.  **Store Listing**:
+    - **Description**: Copy-paste the **Long Description**. Note that Chrome Store might require plain text or limited HTML; Markdown usually works or is stripped gracefully.
+    - **Icon**: Upload `store_logo.png` (128x128 version if asked, otherwise 300x300 usually resizes or use icon128.png).
+    - **Screenshots**: Upload `screenshot_*.png`.
+    - **Marquee**: Upload `marquee.png` (1400x560) as the "Marquee promo tile".
