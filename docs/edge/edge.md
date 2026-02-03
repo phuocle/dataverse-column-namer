@@ -17,16 +17,16 @@ This file documents the assets generated for the Microsoft Edge Add-ons store an
 
 ### 2. Promotional Tiles
 **Small Tile**
-- **File:** `small_tile.png`
+- **File:** `small_tile_2.png`
 - **Size:** 440x280
 
 **Large Tile**
-- **File:** `large_tile.png`
-- **Size:** 920x680
+- **File:** `large_tile_2.png`
+- **Size:** 1400x560
 
 **Marquee**
-- **File:** `marquee.png`
-- **Size:** 1400x560
+- **File:** `marquee_2.png`
+- **Size:** 1440x560
 
 ### 3. Screenshots (Mockups)
 **Popup Interface**
@@ -169,8 +169,8 @@ Visit our GitHub repository: [https://github.com/phuocle/dataverse-column-namer]
 2.  **Create New Extension**: Upload the `.zip` file from `deploy/`.
 3.  **Store Listing**:
     - **Description**: Copy-paste the **Long Description** markdown above.
-    - **Logos**: Upload `store_logo.png` (300x300) and `small_tile.png` (440x280), `large_tile.png` (920x680).
-    - **Screenshots**: Upload all files from `docs/edge/` (Popup, Panel, etc.).
+    - **Logos**: Upload `store_logo.png` (300x300) and `small_tile_2.png` (440x280), `large_tile_2.png` (1400x560).
+    - **Screenshots**: Upload all files from `docs/edge/` (Popup, Panel, etc. - specifically `*_2.png` versions).
     - **Demo Video**: Upload `demo.gif` if a video upload section exists, or use it for promotional materials.
 4.  **Properties**:
     - Set Category to "Developer Tools".
@@ -183,7 +183,7 @@ Visit our GitHub repository: [https://github.com/phuocle/dataverse-column-namer]
     - **Description**: Copy-paste the **Long Description**. Note that Chrome Store might require plain text or limited HTML; Markdown usually works or is stripped gracefully.
     - **Icon**: Upload `store_logo.png` (128x128 version if asked, otherwise 300x300 usually resizes or use icon128.png).
     - **Screenshots**: Upload `screenshot_*.png`.
-    - **Marquee**: Upload `marquee.png` (1400x560) as the "Marquee promo tile".
+    - **Marquee**: Upload `marquee_2.png` (1440x560) as the "Marquee promo tile".
 
 ## 📝 Notes for Certification (Reviewers)
 Copy and paste this into the "Notes for certification" field:
