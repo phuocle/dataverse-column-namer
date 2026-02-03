@@ -35,11 +35,13 @@ This file documents the assets generated for the Microsoft Edge Add-ons store an
 **New Column Panel**
 - **File:** `screenshot_panel.png`
 
-**Configuration Settings**
-- **File:** `screenshot_config.png`
+**Popup Configuration**
+- **File:** `screenshot_config_2.png`
+- **Caption:** `Easy Configuration` or `Customize Naming Conventions`
 
 **Active Environment Indicator**
-- **File:** `screenshot_active.png`
+- **File:** `screenshot_active_2.png`
+- **Caption:** `Active Environment Indicator` or `Seamless Integration`
 
 ### 4. Demo Video
 - **File:** `demo.gif`
@@ -149,6 +151,15 @@ Visit our GitHub repository: [https://github.com/phuocle/dataverse-column-namer]
 - **Website:** https://github.com/phuocle/dataverse-column-namer
 - **Support:** https://github.com/phuocle/dataverse-column-namer/issues
 
+### Search Terms (Tags)
+1. `Dataverse`
+2. `Power Apps`
+3. `Dynamics 365`
+4. `Power Platform`
+5. `Schema Name`
+6. `Logical Name`
+7. `Column Namer`
+
 ---
 
 ## 🚀 Deployment Instructions
@@ -173,3 +184,26 @@ Visit our GitHub repository: [https://github.com/phuocle/dataverse-column-namer]
     - **Icon**: Upload `store_logo.png` (128x128 version if asked, otherwise 300x300 usually resizes or use icon128.png).
     - **Screenshots**: Upload `screenshot_*.png`.
     - **Marquee**: Upload `marquee.png` (1400x560) as the "Marquee promo tile".
+
+## 📝 Notes for Certification (Reviewers)
+Copy and paste this into the "Notes for certification" field:
+
+```text
+This extension is a developer productivity tool designed for Microsoft Power Apps & Dataverse makers. It runs entirely locally in the browser and requires no external account or login.
+
+**Testing Instructions:**
+1. Navigate to the Power Apps Maker Portal: https://make.powerapps.com/
+2. Open any Solution or Table (e.g., create a dummy table).
+3. Click "New > Column".
+4. Open the Extension Popup and "Pin" the current environment to activate it (Status matches "Active").
+5. Type in the "Display name" field (e.g., "Customer ID").
+6. Verify that the "Schema name" field automatically populates (e.g., "customer_id") based on the configured convention.
+
+**Key Features to Verify:**
+- Auto-population of schema name on keypress.
+- Suffix generation for specific data types (e.g., changing type to Lookup appends "_id").
+- "Pin Environment" safety feature: The extension only runs on whitelisted environment URLs.
+
+**Dependencies:**
+- Depends on the DOM structure of the standard Power Apps Maker portal. 
+```

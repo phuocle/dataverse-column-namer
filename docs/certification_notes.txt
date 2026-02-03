@@ -1,0 +1,17 @@
+This extension is a developer productivity tool designed for Microsoft Power Apps & Dataverse makers. It runs entirely locally in the browser and requires no external account or login.
+
+**Testing Instructions:**
+1. Navigate to the Power Apps Maker Portal: https://make.powerapps.com/
+2. Open any Solution or Table (e.g., create a dummy table).
+3. Click "New > Column".
+4. Open the Extension Popup and "Pin" the current environment to activate it (Status matches "Active").
+5. Type in the "Display name" field (e.g., "Customer ID").
+6. Verify that the "Schema name" field automatically populates (e.g., "customer_id") based on the configured convention.
+
+**Key Features to Verify:**
+- Auto-population of schema name on keypress.
+- Suffix generation for specific data types (e.g., changing type to Lookup appends "_id").
+- "Pin Environment" safety feature: The extension only runs on whitelisted environment URLs.
+
+**Dependencies:**
+- Depends on the DOM structure of the standard Power Apps Maker portal.
