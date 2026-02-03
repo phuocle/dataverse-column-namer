@@ -57,9 +57,11 @@ The script will:
 1. Validate the source directory
 2. Clean up old packages
 3. Create a temporary build directory
-4. Copy all files including the modified JS files with IS_DEBUG = false
+4. Copy all files as-is from DataverseColumnNamer/ (including content.js and popup.js)
 5. Create the production ZIP package at `deploy/DataverseColumnNamer.zip`
 6. Clean up temporary files
+
+**Important:** The script copies files exactly as they are. Ensure you completed step 1 before running this script.
 
 ### 3. Verify the package
 
