@@ -5,7 +5,13 @@
 
 .DESCRIPTION
     This script automates the deployment workflow for the Dataverse Column Namer extension.
-    It creates a production-ready ZIP package with IS_DEBUG set to false without modifying source files.
+    It creates a production-ready ZIP package by copying all files to a temporary directory.
+    
+    IMPORTANT: Before running this script, ensure IS_DEBUG is set to false in:
+    - DataverseColumnNamer/content.js
+    - DataverseColumnNamer/popup.js
+    
+    After deployment, restore IS_DEBUG back to true for development.
 
 .NOTES
     Version: 1.0.0
@@ -31,7 +37,7 @@ Write-Host "========================================" -ForegroundColor Cyan
 Write-Host ""
 
 # Step 1: Validate source directory
-Write-Host "[1/9] Validating source directory..." -ForegroundColor Yellow
+Write-Host "[1/7] Validating source directory..." -ForegroundColor Yellow
 if (-not (Test-Path $sourceDir)) {
     Write-Error "Source directory not found: $sourceDir"
     exit 1
@@ -40,7 +46,7 @@ Write-Host "      Success: Source directory validated" -ForegroundColor Green
 Write-Host ""
 
 # Step 2: Clean up old packages
-Write-Host "[2/9] Cleaning up old packages..." -ForegroundColor Yellow
+Write-Host "[2/7] Cleaning up old packages..." -ForegroundColor Yellow
 if (Test-Path $outputZip) {
     Remove-Item -Path $outputZip -Force -ErrorAction SilentlyContinue
     Write-Host "      Success: Removed old package" -ForegroundColor Green
@@ -50,13 +56,13 @@ if (Test-Path $outputZip) {
 Write-Host ""
 
 # Step 3: Create deploy folder
-Write-Host "[3/9] Creating deploy folder..." -ForegroundColor Yellow
+Write-Host "[3/7] Creating deploy folder..." -ForegroundColor Yellow
 New-Item -ItemType Directory -Force -Path $deployDir | Out-Null
 Write-Host "      Success: Deploy folder ready" -ForegroundColor Green
 Write-Host ""
 
 # Step 4: Create temporary build directory
-Write-Host "[4/9] Creating temporary build directory..." -ForegroundColor Yellow
+Write-Host "[4/7] Creating temporary build directory..." -ForegroundColor Yellow
 if (Test-Path $tempBuildDir) {
     Remove-Item -Path $tempBuildDir -Recurse -Force
 }
@@ -65,8 +71,8 @@ Write-Host "      Success: Temporary build directory created" -ForegroundColor G
 Write-Host ""
 
 # Step 5: Copy static files
-Write-Host "[5/9] Copying static files..." -ForegroundColor Yellow
-$staticFiles = @("manifest.json", "styles.css", "popup.css", "popup.html", "naming-utils.js")
+Write-Host "[5/7] Copying static files..." -ForegroundColor Yellow
+$staticFiles = @("manifest.json", "styles.css", "popup.css", "popup.html", "naming-utils.js", "content.js", "popup.js")
 foreach ($file in $staticFiles) {
     $sourcePath = Join-Path $sourceDir $file
     if (Test-Path $sourcePath) {
@@ -87,43 +93,15 @@ if (Test-Path $iconsSource) {
 }
 Write-Host ""
 
-# Step 6: Copy and modify content.js
-Write-Host "[6/9] Processing content.js (IS_DEBUG = false)..." -ForegroundColor Yellow
-$contentJsSource = Join-Path $sourceDir "content.js"
-$contentJsDest = Join-Path $tempBuildDir "content.js"
-if (Test-Path $contentJsSource) {
-    $contentJs = Get-Content $contentJsSource -Raw
-    $contentJs = $contentJs -replace 'const IS_DEBUG = true;', 'const IS_DEBUG = false;'
-    Set-Content -Path $contentJsDest -Value $contentJs -NoNewline -Encoding UTF8
-    Write-Host "      Success: content.js processed with IS_DEBUG = false" -ForegroundColor Green
-} else {
-    Write-Error "content.js not found!"
-}
-Write-Host ""
-
-# Step 7: Copy and modify popup.js
-Write-Host "[7/9] Processing popup.js (IS_DEBUG = false)..." -ForegroundColor Yellow
-$popupJsSource = Join-Path $sourceDir "popup.js"
-$popupJsDest = Join-Path $tempBuildDir "popup.js"
-if (Test-Path $popupJsSource) {
-    $popupJs = Get-Content $popupJsSource -Raw
-    $popupJs = $popupJs -replace 'const IS_DEBUG = true;', 'const IS_DEBUG = false;'
-    Set-Content -Path $popupJsDest -Value $popupJs -NoNewline -Encoding UTF8
-    Write-Host "      Success: popup.js processed with IS_DEBUG = false" -ForegroundColor Green
-} else {
-    Write-Error "popup.js not found!"
-}
-Write-Host ""
-
 # Step 8: Create ZIP package
-Write-Host "[8/9] Creating production ZIP package..." -ForegroundColor Yellow
+Write-Host "[6/7] Creating production ZIP package..." -ForegroundColor Yellow
 
 Compress-Archive -Path "$tempBuildDir\*" -DestinationPath $outputZip -Force
 Write-Host "      Success: ZIP package created: DataverseColumnNamer.zip" -ForegroundColor Green
 Write-Host ""
 
 # Step 9: Clean up temporary directory
-Write-Host "[9/9] Cleaning up temporary files..." -ForegroundColor Yellow
+Write-Host "[7/7] Cleaning up temporary files..." -ForegroundColor Yellow
 Remove-Item -Path $tempBuildDir -Recurse -Force
 Write-Host "      Success: Temporary build directory removed" -ForegroundColor Green
 Write-Host ""
