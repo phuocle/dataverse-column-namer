@@ -56,7 +56,7 @@ Automatically generates schema names for Dataverse columns following configurabl
 ### Bước 2: Upload Extension
 
 1. Click **"New Item"** button
-2. Upload file `DataverseColumnNamer.zip` từ thư mục `deploy/SharePackage/`
+2. Upload file `DataverseColumnNamer.zip` từ thư mục `deploy/`
 3. Chờ hệ thống analyze package (~30 giây)
 4. Nếu có lỗi, fix và upload lại
 

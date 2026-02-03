@@ -66,7 +66,7 @@ Write-Host ""
 
 # Step 5: Copy static files
 Write-Host "[5/9] Copying static files..." -ForegroundColor Yellow
-$staticFiles = @("manifest.json", "styles.css", "popup.css", "popup.html", "utils.js")
+$staticFiles = @("manifest.json", "styles.css", "popup.css", "popup.html", "naming-utils.js")
 foreach ($file in $staticFiles) {
     $sourcePath = Join-Path $sourceDir $file
     if (Test-Path $sourcePath) {
@@ -94,7 +94,7 @@ $contentJsDest = Join-Path $tempBuildDir "content.js"
 if (Test-Path $contentJsSource) {
     $contentJs = Get-Content $contentJsSource -Raw
     $contentJs = $contentJs -replace 'const IS_DEBUG = true;', 'const IS_DEBUG = false;'
-    Set-Content -Path $contentJsDest -Value $contentJs -NoNewline
+    Set-Content -Path $contentJsDest -Value $contentJs -NoNewline -Encoding UTF8
     Write-Host "      Success: content.js processed with IS_DEBUG = false" -ForegroundColor Green
 } else {
     Write-Error "content.js not found!"
@@ -108,7 +108,7 @@ $popupJsDest = Join-Path $tempBuildDir "popup.js"
 if (Test-Path $popupJsSource) {
     $popupJs = Get-Content $popupJsSource -Raw
     $popupJs = $popupJs -replace 'const IS_DEBUG = true;', 'const IS_DEBUG = false;'
-    Set-Content -Path $popupJsDest -Value $popupJs -NoNewline
+    Set-Content -Path $popupJsDest -Value $popupJs -NoNewline -Encoding UTF8
     Write-Host "      Success: popup.js processed with IS_DEBUG = false" -ForegroundColor Green
 } else {
     Write-Error "popup.js not found!"
@@ -117,7 +117,7 @@ Write-Host ""
 
 # Step 8: Create ZIP package
 Write-Host "[8/9] Creating production ZIP package..." -ForegroundColor Yellow
-$itemsToCompress = Get-ChildItem -Path $tempBuildDir -Recurse
+
 Compress-Archive -Path "$tempBuildDir\*" -DestinationPath $outputZip -Force
 Write-Host "      Success: ZIP package created: DataverseColumnNamer.zip" -ForegroundColor Green
 Write-Host ""
