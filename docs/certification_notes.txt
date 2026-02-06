@@ -1,17 +1,156 @@
-This extension is a developer productivity tool designed for Microsoft Power Apps & Dataverse makers. It runs entirely locally in the browser and requires no external account or login.
+Dataverse Column Namer - Store Certification Testing Notes
+==========================================================
 
-**Testing Instructions:**
-1. Navigate to the Power Apps Maker Portal: https://make.powerapps.com/
-2. Open any Solution or Table (e.g., create a dummy table).
-3. Click "New > Column".
-4. Open the Extension Popup and "Pin" the current environment to activate it (Status matches "Active").
-5. Type in the "Display name" field (e.g., "Customer ID").
-6. Verify that the "Schema name" field automatically populates (e.g., "customer_id") based on the configured convention.
+This extension is a developer productivity tool designed for Microsoft Power Apps & Dataverse makers. It runs entirely locally in the browser and requires no external account or login. All settings are stored locally in the browser using Chrome storage API.
 
-**Key Features to Verify:**
-- Auto-population of schema name on keypress.
-- Suffix generation for specific data types (e.g., changing type to Lookup appends "_id").
-- "Pin Environment" safety feature: The extension only runs on whitelisted environment URLs.
+---
 
-**Dependencies:**
-- Depends on the DOM structure of the standard Power Apps Maker portal.
+TESTING ENVIRONMENT
+-------------------
+Demo URL: https://demo-d365iconsandtooltips.crm.dynamics.com/main.aspx
+Portal URL: https://make.powerapps.com
+Email: demo@d365icons.onmicrosoft.com
+Password: icons@2018
+Environment Name: DEMO
+Solution Name: DEMO
+
+---
+
+PREREQUISITES
+-------------
+1. Sign in to https://make.powerapps.com with the credentials above
+2. Select Environment "DEMO" from the environment picker (top right)
+3. Navigate to: Solutions > DEMO > Tables > [Any Table] or create a new test table
+
+---
+
+TEST CASES
+----------
+
+CASE 1: Pin Environment / Activation Test
+------------------------------------------
+Purpose: Verify the extension can detect and pin the current environment
+
+Steps:
+1. Navigate to https://make.powerapps.com
+2. Ensure you are on Environment "DEMO"
+3. Click the extension icon to open the popup
+4. Observe "Current Environment" field shows "DEMO"
+5. Click the 📍 (Pin) button to set "DEMO" as Target Environment
+6. Click "Save Configuration"
+7. Verify Status badge shows "Active (environment matched)"
+8. Verify the Environment button in Power Apps header is highlighted (green outline)
+
+Expected Result:
+- Status shows "Active (environment matched)"
+- Environment button has visual highlight
+- Extension is now active for this environment
+
+
+CASE 2: Auto-Generate Schema Name with Customer Type Suffix
+------------------------------------------------------------
+Purpose: Verify schema name auto-generation and suffix for Customer data type
+
+Steps:
+1. Ensure extension is Active (from Case 1)
+2. Navigate to any Table in Solution "DEMO"
+3. Click "New > Column"
+4. Observe the green badge "Dataverse Column Namer Active" appears at top of panel
+5. In Data Type dropdown, select "Customer"
+6. In Display name field, type: "Primary Customer"
+7. Observe the Schema name field
+
+Expected Result:
+- Schema name auto-populates with: "primary_customer_customerid"
+- The suffix "_customerid" is automatically added for Customer data type
+
+
+CASE 3: Custom Suffix Configuration Test
+-----------------------------------------
+Purpose: Verify users can customize suffixes for different data types
+
+Steps:
+1. Click the extension icon to open popup
+2. Expand "Advanced: Suffix Configuration" accordion
+3. In "Relationship" section, find "Lookup:" field
+4. Change the value from "_id" to "_lookup"
+5. Click "Save Configuration"
+6. Navigate to a Table and click "New > Column"
+7. Select Data Type: "Lookup"
+8. Enter Display name: "Related Account"
+9. Observe the Schema name field
+
+Expected Result:
+- Schema name auto-populates with: "related_account_lookup"
+- The new custom suffix "_lookup" is applied instead of default "_id"
+
+
+CASE 4: Inactive Environment Test (Extension Disabled)
+-------------------------------------------------------
+Purpose: Verify extension does NOT auto-generate when on non-pinned environment
+
+Steps:
+1. In Power Apps, switch to a DIFFERENT environment (not "DEMO")
+   - Click the Environment selector (top right) 
+   - Select any other environment, e.g., "Default" environment
+2. Click the extension icon
+3. Observe Status shows "Inactive (environment mismatch)"
+4. Navigate to any Table and click "New > Column"
+5. The green badge should NOT appear
+6. Enter a Display name: "Test Field"
+
+Expected Result:
+- Status shows "Inactive (environment mismatch)"
+- NO green badge appears on the panel
+- Schema name is NOT auto-populated (field remains as PowerApps default behavior)
+- Extension does NOT interfere when inactive
+
+---
+
+KEY FEATURES TO VERIFY
+----------------------
+✓ Auto-population of schema name on keypress in Display name field
+✓ Suffix generation for specific data types:
+  - Lookup → "_id" (default)
+  - Customer → "_customerid"  
+  - Choice → "_choice"
+  - Choices (multi-select) → "_choices"
+  - Yes/No → "_yn"
+  - Calculated → "_calculated"
+  - Rollup → "_rollup"
+  - Formula → "_fx"
+✓ Naming conventions (dropdown):
+  - underscore_lowercase: "hello_world" (default)
+  - underscore_preserve: "Hello_World"
+  - pascalCase: "HelloWorld"
+  - camelCase: "helloWorld"
+  - remove_spaces: "helloworld"
+✓ "Pin Environment" safety feature: Extension only runs on whitelisted environment
+✓ Import/Export configuration: Share settings as JSON file
+✓ Reset to defaults: Restore all settings to default values
+✓ Disable extension: Clear configuration and deactivate
+
+---
+
+PERMISSIONS JUSTIFICATION
+-------------------------
+- activeTab: Required to detect the current PowerApps environment name
+- scripting: Required to inject auto-naming logic into PowerApps column forms
+- storage: Required to save user configuration and suffix preferences locally
+
+---
+
+PRIVACY
+-------
+- This extension does NOT collect any personal data
+- All settings are stored locally in browser storage (chrome.storage.local)
+- No external API calls or analytics
+- No login or authentication required
+
+---
+
+DEPENDENCIES
+------------
+- Depends on the DOM structure of the standard Power Apps Maker portal (https://make.powerapps.com)
+- Uses Manifest V3
+- Compatible with Chrome and Microsoft Edge browsers
