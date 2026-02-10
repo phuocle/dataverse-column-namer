@@ -349,7 +349,7 @@ Automatically generates schema names for Dataverse columns following configurabl
    [Install from Chrome Web Store](https://chrome.google.com/webstore/detail/YOUR_EXTENSION_ID)
    
    ### Edge Add-ons
-   [Install from Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/YOUR_EXTENSION_ID)
+   [Install from Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/dataverse-column-namer/jkfcfpanbolhddigmakgoganbkkfclfh)
    ```
 
 2. **Announce trên social media:**
@@ -357,7 +357,7 @@ Automatically generates schema names for Dataverse columns following configurabl
    - Twitter/X với hashtags: #PowerApps #Dataverse
    - PowerApps community forums
 
-3. **Tạo demo video** và upload lên YouTube
+3. **Tạo demo video** và upload lên YouTube (Done: https://youtu.be/MhyOlQZNDjQ)
 
 ### Monitor Performance
 

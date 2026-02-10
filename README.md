@@ -22,13 +22,19 @@ When creating columns in Dataverse (PowerApps), you need both a **Display Name**
 
 ## 🚀 Installation
 
+### Microsoft Edge Add-ons
+[![Edge Add-ons](https://img.shields.io/badge/Edge-Install-blue?logo=microsoftedge)](https://microsoftedge.microsoft.com/addons/detail/dataverse-column-namer/jkfcfpanbolhddigmakgoganbkkfclfh)
+[**Download for Edge**](https://microsoftedge.microsoft.com/addons/detail/dataverse-column-namer/jkfcfpanbolhddigmakgoganbkkfclfh)
+
 ### Chrome Web Store
 [![Chrome Web Store](https://img.shields.io/badge/Chrome-Install-blue?logo=googlechrome)](https://chrome.google.com/webstore/detail/dataverse-column-namer)
-_Chrome Web Store listing coming soon. This link will be updated once the extension is published._
+_Chrome Web Store listing coming soon._
 
-### Microsoft Edge Add-ons
-[![Edge Add-ons](https://img.shields.io/badge/Edge-Install-blue?logo=microsoftedge)](https://microsoftedge.microsoft.com/addons/detail/dataverse-column-namer)
-_Microsoft Edge Add-ons listing coming soon. This link will be updated once the extension is published._
+## 📺 Demo
+
+[![Watch the demo](https://img.youtube.com/vi/MhyOlQZNDjQ/0.jpg)](https://youtu.be/MhyOlQZNDjQ)
+
+**Watch the full demo on YouTube:** [https://youtu.be/MhyOlQZNDjQ](https://youtu.be/MhyOlQZNDjQ)
 
 ## 📖 Usage
 

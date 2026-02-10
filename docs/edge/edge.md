@@ -45,6 +45,7 @@ This file documents the assets generated for the Microsoft Edge Add-ons store an
 
 ### 4. Demo Video
 - **File:** `demo.gif`
+- **YouTube:** https://youtu.be/MhyOlQZNDjQ
 - **Context:** A short animation demonstrating the extension in action. Useful for the "Promotional Video" or "Demo" section if supported, or as a high-quality animated asset for external promotion.
 
 ---
@@ -171,7 +172,7 @@ Visit our GitHub repository: [https://github.com/phuocle/dataverse-column-namer]
     - **Description**: Copy-paste the **Long Description** markdown above.
     - **Logos**: Upload `store_logo.png` (300x300) and `small_tile_2.png` (440x280), `large_tile_2.png` (1400x560).
     - **Screenshots**: Upload all files from `docs/edge/` (Popup, Panel, etc. - specifically `*_2.png` versions).
-    - **Demo Video**: Upload `demo.gif` if a video upload section exists, or use it for promotional materials.
+    - **Demo Video**: Upload `demo.gif` if a video upload section exists, or use it for promotional materials (Done: https://youtu.be/MhyOlQZNDjQ).
 4.  **Properties**:
     - Set Category to "Developer Tools".
     - Add Support URL from "Additional Info".
