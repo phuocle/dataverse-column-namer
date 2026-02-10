@@ -1,0 +1,54 @@
+# Dataverse Column Namer - Chrome/Edge Extension Repository
+
+# OS Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE and Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.settings/
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+*.cache
+
+# Node modules (if using build tools later)
+node_modules/
+package-lock.json
+yarn.lock
+
+# Build output (if added later)
+dist/
+build/
+
+# Environment files
+.env
+.env.local
+
+# Backup files
+*.bak
+*.backup
+
+# Windows
+[Dd]esktop.ini
+$RECYCLE.BIN/
+
+# macOS
+.AppleDouble
+.LSOverride
+._*
+
+# Test files
+test/
+tests/
+# *.test.js
+# *.spec.js
+

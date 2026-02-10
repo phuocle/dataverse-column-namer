@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Dataverse Column Namer</title>
+    <link rel="stylesheet" href="popup.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="icons/icon48.png" alt="Icon">
+            <span class="title">Dataverse Column Namer</span>
+        </div>
+
+        <div class="card current-env" id="currentEnvSection">
+            <span class="label-semibold">Current Environment:</span>
+            <span id="currentEnv">Loading...</span>
+        </div>
+
+        <div id="statusSection" class="status-badge">
+            <span class="status-dot"></span>
+            <span id="statusText">Checking...</span>
+        </div>
+
+        <div class="form-group">
+            <label class="fluent-label" for="targetEnv">Target Environment:</label>
+            <div class="input-group">
+                <input type="text" id="targetEnv" class="fluent-input env-input" placeholder="Click pin to set"
+                    readonly>
+                <button id="useCurrentBtn" class="fluent-button subtle" title="Use current environment"
+                    aria-label="Use current environment">
+                    <span aria-hidden="true">📍</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="fluent-label" for="namingConvention">Naming Convention:</label>
+            <select id="namingConvention" class="fluent-select full-width">
+                <option value="underscore_lowercase">underscore_lowercase (hello_world) [Default]</option>
+                <option value="underscore_preserve">underscore_preserve (Hello_World)</option>
+                <option value="pascalCase">pascalCase (HelloWorld)</option>
+                <option value="camelCase">camelCase (helloWorld)</option>
+                <option value="remove_spaces">remove_spaces (helloworld)</option>
+            </select>
+        </div>
+
+        <details class="fluent-accordion">
+            <summary class="accordion-header">
+                <svg class="chevron-icon" width="12" height="12" viewBox="0 0 12 12" fill="currentColor">
+                    <path
+                        d="M4.646 2.146a.5.5 0 0 1 .708 0l3.5 3.5a.5.5 0 0 1 0 .708l-3.5 3.5a.5.5 0 0 1-.708-.708L7.793 6 4.646 2.854a.5.5 0 0 1 0-.708z" />
+                </svg>
+                Advanced: Suffix Configuration
+            </summary>
+            <div class="accordion-content">
+                <!-- Relationship Types -->
+                <fieldset class="suffix-group">
+                    <legend>Relationship</legend>
+                    <div class="suffix-grid two-columns">
+                        <div class="suffix-item">
+                            <label class="fluent-label small">Lookup:</label>
+                            <input type="text" id="suffixLookup" class="fluent-input" placeholder="_id">
+                        </div>
+                        <div class="suffix-item">
+                            <label class="fluent-label small">Customer:</label>
+                            <input type="text" id="suffixCustomer" class="fluent-input" placeholder="_customerid">
+                        </div>
+                    </div>
+                </fieldset>
+
+                <!-- Choice Types -->
+                <fieldset class="suffix-group">
+                    <legend>Choice</legend>
+                    <div class="suffix-grid two-columns">
+                        <div class="suffix-item">
+                            <label class="fluent-label small">Choice:</label>
+                            <input type="text" id="suffixChoice" class="fluent-input" placeholder="_choice">
+                        </div>
+                        <div class="suffix-item">
+                            <label class="fluent-label small">Choices:</label>
+                            <input type="text" id="suffixChoices" class="fluent-input" placeholder="_choices">
+                        </div>
+                        <div class="suffix-item">
+                            <label class="fluent-label small">Yes/No:</label>
+                            <input type="text" id="suffixYesNo" class="fluent-input" placeholder="_yn">
+                        </div>
+                    </div>
+                </fieldset>
+
+                <!-- Computed Types -->
+                <fieldset class="suffix-group">
+                    <legend>Computed</legend>
+                    <div class="suffix-grid two-columns">
+                        <div class="suffix-item">
+                            <label class="fluent-label small">Calculated:</label>
+                            <input type="text" id="suffixCalculated" class="fluent-input" placeholder="_calculated">
+                        </div>
+                        <div class="suffix-item">
+                            <label class="fluent-label small">Rollup:</label>
+                            <input type="text" id="suffixRollup" class="fluent-input" placeholder="_rollup">
+                        </div>
+                        <div class="suffix-item">
+                            <label class="fluent-label small">Formula:</label>
+                            <input type="text" id="suffixFormula" class="fluent-input" placeholder="_fx">
+                        </div>
+                    </div>
+                </fieldset>
+
+                <!-- Number Types -->
+                <fieldset class="suffix-group">
+                    <legend>Number</legend>
+                    <div class="suffix-grid two-columns">
+                        <div class="suffix-item">
+                            <label class="fluent-label small">Currency:</label>
+                            <input type="text" id="suffixCurrency" class="fluent-input" placeholder="">
+                        </div>
+                        <div class="suffix-item">
+                            <label class="fluent-label small">Whole Number:</label>
+                            <input type="text" id="suffixWholeNumber" class="fluent-input" placeholder="">
+                        </div>
+                        <div class="suffix-item">
+                            <label class="fluent-label small">Decimal:</label>
+                            <input type="text" id="suffixDecimal" class="fluent-input" placeholder="">
+                        </div>
+                        <div class="suffix-item">
+                            <label class="fluent-label small">Float:</label>
+                            <input type="text" id="suffixFloat" class="fluent-input" placeholder="">
+                        </div>
+                        <div class="suffix-item">
+                            <label class="fluent-label small">Language:</label>
+                            <input type="text" id="suffixLanguage" class="fluent-input" placeholder="">
+                        </div>
+                    </div>
+                </fieldset>
+
+                <!-- Date/Time Types -->
+                <fieldset class="suffix-group">
+                    <legend>Date & Time</legend>
+                    <div class="suffix-grid two-columns">
+                        <div class="suffix-item">
+                            <label class="fluent-label small">DateTime:</label>
+                            <input type="text" id="suffixDateTime" class="fluent-input" placeholder="">
+                        </div>
+                        <div class="suffix-item">
+                            <label class="fluent-label small">DateOnly:</label>
+                            <input type="text" id="suffixDateOnly" class="fluent-input" placeholder="">
+                        </div>
+                        <div class="suffix-item">
+                            <label class="fluent-label small">Duration:</label>
+                            <input type="text" id="suffixDuration" class="fluent-input" placeholder="">
+                        </div>
+                        <div class="suffix-item">
+                            <label class="fluent-label small">Timezone:</label>
+                            <input type="text" id="suffixTimezone" class="fluent-input" placeholder="">
+                        </div>
+                    </div>
+                </fieldset>
+
+                <!-- Single Line Text Types -->
+                <fieldset class="suffix-group">
+                    <legend>Single Line Text</legend>
+                    <div class="suffix-grid two-columns">
+                        <div class="suffix-item">
+                            <label class="fluent-label small">Text:</label>
+                            <input type="text" id="suffixText" class="fluent-input" placeholder="">
+                        </div>
+                        <div class="suffix-item">
+                            <label class="fluent-label small">Text Area:</label>
+                            <input type="text" id="suffixTextArea" class="fluent-input" placeholder="">
+                        </div>
+                        <div class="suffix-item">
+                            <label class="fluent-label small">Rich Text:</label>
+                            <input type="text" id="suffixTextRichText" class="fluent-input" placeholder="">
+                        </div>
+                        <div class="suffix-item">
+                            <label class="fluent-label small">Email:</label>
+                            <input type="text" id="suffixEmail" class="fluent-input" placeholder="">
+                        </div>
+                        <div class="suffix-item">
+                            <label class="fluent-label small">Phone:</label>
+                            <input type="text" id="suffixPhone" class="fluent-input" placeholder="">
+                        </div>
+                        <div class="suffix-item">
+                            <label class="fluent-label small">URL:</label>
+                            <input type="text" id="suffixUrl" class="fluent-input" placeholder="">
+                        </div>
+                        <div class="suffix-item">
+                            <label class="fluent-label small">Ticker:</label>
+                            <input type="text" id="suffixTicker" class="fluent-input" placeholder="">
+                        </div>
+                        <div class="suffix-item">
+                            <label class="fluent-label small">AutoNumber:</label>
+                            <input type="text" id="suffixAutoNumber" class="fluent-input" placeholder="">
+                        </div>
+                    </div>
+                </fieldset>
+
+                <!-- Multiple Lines Text Types -->
+                <fieldset class="suffix-group">
+                    <legend>Multiple Lines Text</legend>
+                    <div class="suffix-grid two-columns">
+                        <div class="suffix-item">
+                            <label class="fluent-label small">Text:</label>
+                            <input type="text" id="suffixMultiline" class="fluent-input" placeholder="">
+                        </div>
+                        <div class="suffix-item">
+                            <label class="fluent-label small">Rich Text:</label>
+                            <input type="text" id="suffixMultilineRichText" class="fluent-input" placeholder="">
+                        </div>
+                    </div>
+                </fieldset>
+
+                <!-- File Types -->
+                <fieldset class="suffix-group">
+                    <legend>File</legend>
+                    <div class="suffix-grid two-columns">
+                        <div class="suffix-item">
+                            <label class="fluent-label small">File:</label>
+                            <input type="text" id="suffixFile" class="fluent-input" placeholder="">
+                        </div>
+                        <div class="suffix-item">
+                            <label class="fluent-label small">Image:</label>
+                            <input type="text" id="suffixImage" class="fluent-input" placeholder="">
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </details>
+
+        <button id="saveBtn" class="fluent-button accent full-width">
+            <svg class="btn-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                <path
+                    d="M13.5 1H4.5L1 4.5V13.5C1 14.3284 1.67157 15 2.5 15H13.5C14.3284 15 15 14.3284 15 13.5V2.5C15 1.67157 14.3284 1 13.5 1ZM8 13C6.34315 13 5 11.6569 5 10C5 8.34315 6.34315 7 8 7C9.65685 7 11 8.34315 11 10C11 11.6569 9.65685 13 8 13ZM11 5H3V3H11V5Z" />
+            </svg>
+            Save Configuration
+        </button>
+
+        <div class="button-row">
+            <button id="exportBtn" class="fluent-button outline" title="Export configuration to JSON file">
+                <svg class="btn-icon" width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
+                    <path
+                        d="M8.5 1v10.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 11.793V1a.5.5 0 0 1 1 0z" />
+                    <path
+                        d="M1 14.5A1.5 1.5 0 0 0 2.5 16h11a1.5 1.5 0 0 0 1.5-1.5v-1a.5.5 0 0 0-1 0v1a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 0-1 0v1z" />
+                </svg>
+                Export
+            </button>
+            <button id="importBtn" class="fluent-button outline" title="Import configuration from JSON file">
+                <svg class="btn-icon" width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
+                    <path
+                        d="M7.5 15V4.207L4.354 7.354a.5.5 0 1 1-.708-.708l4-4a.5.5 0 0 1 .708 0l4 4a.5.5 0 0 1-.708.708L8.5 4.207V15a.5.5 0 0 1-1 0z" />
+                    <path
+                        d="M1 1.5A1.5 1.5 0 0 1 2.5 0h11A1.5 1.5 0 0 1 15 1.5v1a.5.5 0 0 1-1 0v-1a.5.5 0 0 0-.5-.5h-11a.5.5 0 0 0-.5.5v1a.5.5 0 0 1-1 0v-1z" />
+                </svg>
+                Import
+            </button>
+        </div>
+
+        <div class="button-row">
+            <button id="resetBtn" class="fluent-button outline" title="Reset to default values">
+                <svg class="btn-icon" width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
+                    <path d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z" />
+                    <path
+                        d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z" />
+                </svg>
+                Reset
+            </button>
+            <button id="clearBtn" class="fluent-button outline" title="Clear all and disable extension">
+                <svg class="btn-icon" width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
+                    <path
+                        d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Z" />
+                </svg>
+                Disable
+            </button>
+        </div>
+
+        <input type="file" id="importFile" accept=".json" style="display: none;">
+
+        <div id="message" class="message"></div>
+
+        <div class="footer">
+            <a href="https://github.com/phuocle/dataverse-column-namer" target="_blank" class="github-link"
+                title="View on GitHub">
+                <svg class="github-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                    <path
+                        d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z" />
+                </svg>
+                <span>Developed by <strong>PhuocLe</strong></span>
+            </a>
+        </div>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+
+</html>
