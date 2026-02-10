@@ -22,7 +22,9 @@ So I built a tool to fix that. 🛠️
 
 It’s a simple utility that saves seconds per column—and hours per project.
 
-👉 **Get it now on Microsoft Edge Add-ons:** [INSERT_STORE_LINK_HERE]
+👉 **Get it now on Microsoft Edge Add-ons:** https://microsoftedge.microsoft.com/addons/detail/dataverse-column-namer/jkfcfpanbolhddigmakgoganbkkfclfh
+
+📺 **Watch the full demo on YouTube:** https://youtu.be/MhyOlQZNDjQ
 
 Check out the demo below to see it in action! 👇
 
